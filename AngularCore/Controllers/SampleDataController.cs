@@ -15,15 +15,31 @@ namespace AngularCore.Controllers
         };
 
         [HttpGet("[action]")]
-        public IEnumerable<WeatherForecast> WeatherForecasts()
+        public object WeatherForecasts()
         {
             var rng = new Random();
+
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 DateFormatted = DateTime.Now.AddDays(index).ToString("d"),
                 TemperatureC = rng.Next(-20, 55),
                 Summary = Summaries[rng.Next(Summaries.Length)]
             });
+
+            /*分解动作
+            Func<int, WeatherForecast> selector1 = delegate (int index)
+            {
+                return new WeatherForecast
+                {
+                    DateFormatted = DateTime.Now.AddDays(index).ToString("d"),
+                    TemperatureC = rng.Next(-20, 55),
+                    Summary = Summaries[rng.Next(Summaries.Length)]
+                };
+            };
+
+            foreach (int i in Enumerable.Range(1, 5))
+                Enumerable.Select(selector: selector1);
+            */
         }
 
         public class WeatherForecast

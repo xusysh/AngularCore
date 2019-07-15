@@ -7,18 +7,18 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
-import { LoginComponent } from './login/login.component';
+import { TypeNumComponent } from './type-num/type-num.component';
+import { TypeChComponent } from './type-ch/type-ch.component';
+import { CheckRecordsComponent } from './check-records/check-records.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
-    FetchDataComponent,
-    LoginComponent
+    TypeNumComponent,
+    TypeChComponent,
+    CheckRecordsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -26,9 +26,9 @@ import { LoginComponent } from './login/login.component';
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'login', component: LoginComponent }
+      { path: 'type-num', component: TypeNumComponent },
+      { path: 'type-ch', component: TypeChComponent },
+      { path: 'check-records', component: CheckRecordsComponent }
     ])
   ],
   providers: [],

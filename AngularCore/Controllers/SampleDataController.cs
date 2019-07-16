@@ -15,7 +15,7 @@ namespace AngularCore.Controllers
         };
 
         [HttpGet("[action]")]
-        public object WeatherForecasts()
+        public IEnumerable<WeatherForecast> WeatherForecasts()
         {
             var rng = new Random();
 

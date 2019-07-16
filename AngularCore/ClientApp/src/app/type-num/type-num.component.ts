@@ -17,11 +17,16 @@ export class TypeNumComponent {
     this.baseUrl = baseUrl;
   }
 
-  public postRecord() {
+  public PostRecord() {
     var record = { uname: '123', grade: 456 };
     this.httpClient.post<MyResponse>(this.baseUrl + 'api/TypeNum/RecvPost', record).
       subscribe(response => alert(response.msg), error => console.log(error));
   }
+
+  public CountDown() {
+    
+  }
+
 
 }
 

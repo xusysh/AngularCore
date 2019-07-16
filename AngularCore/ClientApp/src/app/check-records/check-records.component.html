@@ -1,1 +1,28 @@
 <h1 align="center">登陆</h1>
+
+<p *ngIf="!comments">
+  <em>
+    <div class="demo" [el-loading]="true" [text]="'拼命加载中'">
+      <el-tag>加载中..</el-tag>
+    </div>
+  </em>
+</p>
+
+<table class='table' *ngIf="comments">
+  <thead>
+    <tr>
+      <th>楼层</th>
+      <th>用户名</th>
+      <th>评论</th>
+      <th>时间</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let comment of comments">
+      <td>{{ comment.id }}</td>
+      <td>{{ comment.uname }}</td>
+      <td>{{ comment.content }}</td>
+      <td>{{ comment.datetime }}</td>
+    </tr>
+  </tbody>
+</table>

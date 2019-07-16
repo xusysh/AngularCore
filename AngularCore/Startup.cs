@@ -14,7 +14,6 @@ namespace AngularCore
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            DatabaseService databaseService = new DatabaseService("111.231.69.132", "root", "admin", "test");
         }
 
         public IConfiguration Configuration { get; }

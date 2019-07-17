@@ -57,7 +57,7 @@ namespace AngularCore.Services
                     else 
                         cmd += $"{field.GetValue(obj)},";
                 }
-                cmd.Remove(cmd.Length);       //删除多余的逗号
+                cmd = cmd.Substring(0, cmd.Length - 1);         //删除多余的逗号
                 cmd += ')';
                 //执行插入事务
                 var command = new MySqlCommand(cmd, connection);

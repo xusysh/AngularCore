@@ -22,19 +22,21 @@ namespace AngularCore.Controllers
                 id = index,
                 uname = $"user{index}",
                 content = $"content{index}",
-                datetime = DateTime.Now.AddDays(index).ToString("d"),
+                datetime = DateTime.Now.AddDays(index).ToString()
             });
         }
 
         [HttpPost("[action]")]
-        public void InsertRecord()
+        public void InsertComment([FromBody]Comment comment)
         {
             try
             {
+                db_service.InsertRecord(comment,"comments");
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine($"Error from Controllers.CheckRecordsController.InsertComment: {ex.Message}");
+                throw;
             }
         }
     }

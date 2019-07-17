@@ -73,9 +73,10 @@ namespace AngularCore.Services
             }
         }
 
-        //获取若干条记录，返回泛型对象数组
-        public T[] GetRecords<T>(string table_name)               
+        //获取若干条记录，返回泛型对象集合
+        public IEnumerable<T> GetRecords<T>(string table_name)               
         {
+            //获取对象类型
             Type type = typeof(T);
             FieldInfo[] fields = type.GetFields();
             try

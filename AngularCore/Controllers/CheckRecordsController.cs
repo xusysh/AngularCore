@@ -13,7 +13,7 @@ namespace AngularCore.Controllers
     [ApiController]
     public class CheckRecordsController : ControllerBase
     {
-        DatabaseService databaseService = new DatabaseService("111.231.69.132", "root", "admin", "AngularCoreDB");
+        DatabaseService db_service = new DatabaseService("111.231.69.132", "root", "admin", "AngularCoreDB");
         [HttpGet("[action]")]
         public IEnumerable<Comment> GetComments()
         {
@@ -25,6 +25,18 @@ namespace AngularCore.Controllers
                 datetime = DateTime.Now.AddDays(index).ToString("d"),
             });
         }
+
+        [HttpPost("[action]")]
+        public void InsertRecord()
+        {
+            try
+            {
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 
     public class Comment
@@ -34,4 +46,5 @@ namespace AngularCore.Controllers
         public string content;
         public string datetime;
     }
+
 }

@@ -74,7 +74,7 @@ namespace AngularCore.Services
         }
 
         //获取若干条记录，返回泛型对象集合
-        public IEnumerable<T> GetRecords<T>(string table_name)               
+        public IEnumerable<T> GetRecords<T>(string table_name, string key = null, string value = null)
         {
             //获取对象类型
             Type type = typeof(T);
@@ -94,7 +94,7 @@ namespace AngularCore.Services
                 Console.WriteLine($"Error from Services.DatabaseService.GetRecords:{ex.Message}");
                 throw;
             }
-            
+
             return null;
         }
     }

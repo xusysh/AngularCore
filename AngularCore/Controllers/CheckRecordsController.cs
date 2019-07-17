@@ -17,13 +17,7 @@ namespace AngularCore.Controllers
         [HttpGet("[action]")]
         public IEnumerable<Comment> GetComments()
         {
-            return Enumerable.Range(1, 6).Select(index => new Comment
-            {
-                id = index,
-                uname = $"user{index}",
-                content = $"content{index}",
-                datetime = DateTime.Now.AddDays(index).ToString()
-            });
+            return db_service.GetRecords();
         }
 
         [HttpPost("[action]")]
@@ -39,6 +33,7 @@ namespace AngularCore.Controllers
                 throw;
             }
         }
+
     }
 
     public class Comment

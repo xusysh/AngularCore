@@ -9,7 +9,7 @@ namespace AngularCoreUnitTest
     public class UnitTest1
     {
         [TestMethod]
-        public void TestMethod1()
+        public void InsertCommentTest()
         {
             CheckRecordsController checkRecordsController = new CheckRecordsController();
             Comment comment = new Comment

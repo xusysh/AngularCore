@@ -1,6 +1,5 @@
 import { Component, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Time } from '@angular/common';
 
 @Component({
   selector: 'app-check-records',
@@ -28,5 +27,5 @@ interface Comment {
   id: number;
   uname: string;
   content: string;
-  datetime: string;
+  datetime: Date;
 }

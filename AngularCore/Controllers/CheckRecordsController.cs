@@ -14,6 +14,7 @@ namespace AngularCore.Controllers
     public class CheckRecordsController : ControllerBase
     {
         DatabaseService db_service = new DatabaseService("111.231.69.132", "root", "admin", "AngularCoreDB");
+
         [HttpGet("[action]")]
         public IEnumerable<Comment> GetComments()
         {
@@ -41,7 +42,7 @@ namespace AngularCore.Controllers
         public int id;
         public string uname;
         public string content;
-        public string datetime;
+        public DateTime datetime;
     }
 
 }

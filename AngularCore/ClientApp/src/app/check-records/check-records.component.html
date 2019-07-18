@@ -22,7 +22,7 @@
       <td>{{ comment.id }}</td>
       <td>{{ comment.uname }}</td>
       <td>{{ comment.content }}</td>
-      <td>{{ comment.datetime }}</td>
+      <td>{{ comment.datetime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
     </tr>
   </tbody>
 </table>

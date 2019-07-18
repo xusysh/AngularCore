@@ -76,26 +76,34 @@ namespace AngularCore.Services
         //获取若干条记录，返回泛型对象集合
         public IEnumerable<T> GetRecords<T>(string table_name, string key = null, string value = null)
         {
-            //获取对象类型
-            Type type = typeof(T);
-            FieldInfo[] fields = type.GetFields();
             try
             {
-                var transaction = connection.BeginTransaction();
+                string cmd = $"select * from {table_name}";
+                var command = new MySqlCommand(cmd, connection);
+                MySqlDataReader reader = command.ExecuteReader();
+                object[] vals = new object[reader.FieldCount];
 
-                MySqlCommand cmd = connection.CreateCommand();
-                cmd.CommandText = "mytable";
-                MySqlDataReader reader = cmd.ExecuteReader();
-
-                transaction.Commit();
+                List<T> objs = new List<T>();
+                while (reader.Read())
+                {
+                    T obj = Activator.CreateInstance<T>();
+                    FieldInfo[] fields = typeof(T).GetFields();
+                    int i = 0;
+                    reader.GetValues(vals);
+                    foreach (var field in fields)
+                    {
+                        field.SetValue(obj, vals[i]);
+                        i++;
+                    }
+                    objs.Add(obj);
+                }
+                return objs.AsEnumerable();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error from Services.DatabaseService.GetRecords:{ex.Message}");
                 throw;
             }
-
-            return null;
         }
     }
 }

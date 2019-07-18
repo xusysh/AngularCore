@@ -8,16 +8,17 @@ namespace AngularCoreUnitTest
     [TestClass]
     public class UnitTest1
     {
+        CheckRecordsController checkRecordsController = new CheckRecordsController();
+
         [TestMethod]
         public void InsertComment_Test()
         {
-            CheckRecordsController checkRecordsController = new CheckRecordsController();
             Comment comment = new Comment
             {
                 id = 2,
                 uname = $"user{2}",
                 content = $"content{2}",
-                datetime = DateTime.Now.ToString(),
+                datetime = DateTime.Now,
             };
             checkRecordsController.InsertComment(comment);
         }
@@ -25,15 +26,8 @@ namespace AngularCoreUnitTest
         [TestMethod]
         public void GetComments_Test()
         {
-            CheckRecordsController checkRecordsController = new CheckRecordsController();
-            Comment comment = new Comment
-            {
-                id = 2,
-                uname = $"user{2}",
-                content = $"content{2}",
-                datetime = DateTime.Now.ToString(),
-            };
-            checkRecordsController.InsertComment(comment);
+            var result = checkRecordsController.GetComments();
+            result.GetEnumerator();
         }
     }
 }

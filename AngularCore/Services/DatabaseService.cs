@@ -73,30 +73,38 @@ namespace AngularCore.Services
             }
         }
 
-        //获取若干条记录，返回泛型对象集合
+        //从数据库获取若干条记录，返回指定对应类型的对象集合
         public IEnumerable<T> GetRecords<T>(string table_name,
             string key = null, string value = null, string options = null)
         {
             try
             {
+                //生成格式化查询语句
                 string cmd = $"select * from {table_name}" +
                     $"{(key == null ? "" : $" where {key} = ")}{value}" + options;
+                //进行查询
                 var command = new MySqlCommand(cmd, connection);
                 MySqlDataReader reader = command.ExecuteReader();
+                //准备数据库返回的object对象数组（一行多个不同类元素抽象为object）
                 object[] vals = new object[reader.FieldCount];
-
+                //准备指定对应类型的对象集合（多行）
                 List<T> objs = new List<T>();
                 while (reader.Read())
                 {
+                    //生成指定类型的对象实例
                     T obj = Activator.CreateInstance<T>();
+                    //通过反射获取对象的所有属性类型
                     FieldInfo[] fields = typeof(T).GetFields();
                     int i = 0;
+                    //获取一行元素作为一个对象数组
                     reader.GetValues(vals);
+                    //遍历对象属性类型和对象数组，进行赋值
                     foreach (var field in fields)
                     {
                         field.SetValue(obj, vals[i]);
                         i++;
                     }
+                    //添加一个对象（一行）
                     objs.Add(obj);
                 }
                 return objs.AsEnumerable();

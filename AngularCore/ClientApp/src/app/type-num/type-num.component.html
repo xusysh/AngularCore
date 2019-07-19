@@ -1,1 +1,12 @@
 <h1 align="center">小键盘录入测试</h1>
+<div>
+  <el-input *ngFor="let num_row of generated_num_rows" placeholder="请输入内容" [model]="input3">
+    <ng-template #prepend >
+      <code style="color:blue">
+        {{num_row.num1 | number:'3.0'}},
+        {{num_row.num2 | number:'3.0'}},
+        {{num_row.num3 | number:'3.0'}}
+      </code>
+    </ng-template>
+  </el-input>
+</div>

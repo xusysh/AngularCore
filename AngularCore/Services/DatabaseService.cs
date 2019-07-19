@@ -74,11 +74,13 @@ namespace AngularCore.Services
         }
 
         //获取若干条记录，返回泛型对象集合
-        public IEnumerable<T> GetRecords<T>(string table_name, string key = null, string value = null)
+        public IEnumerable<T> GetRecords<T>(string table_name,
+            string key = null, string value = null, string options = null)
         {
             try
             {
-                string cmd = $"select * from {table_name}";
+                string cmd = $"select * from {table_name}" +
+                    $"{(key == null ? "" : $" where {key} = ")}{value}" + options;
                 var command = new MySqlCommand(cmd, connection);
                 MySqlDataReader reader = command.ExecuteReader();
                 object[] vals = new object[reader.FieldCount];

@@ -7,8 +7,7 @@
     <div el-aside align="center" width="32%"></div>
     <div el-aside align="center" width="36%">
       <el-input *ngFor="let num_row of generated_num_rows"
-                placeholder="输入内容以开始计时" maxlength="16"
-                type="text" style="background-color:lightgreen">
+                placeholder="输入内容以开始计时" maxlength="16">
         <ng-template #prepend>
           <code style="color:blue; background:none;">{{num_row.num1 | number:'3.0'}}</code>
           <code style="color:blue; background:none;">{{num_row.num2 | number:'3.0'}}</code>

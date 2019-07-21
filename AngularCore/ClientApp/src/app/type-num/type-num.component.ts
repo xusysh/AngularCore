@@ -1,6 +1,6 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { error } from 'protractor';
+import { error, element } from 'protractor';
 import { ElNotificationService } from 'element-angular'
 import { ElMessageService } from 'element-angular'
 import { Timeouts } from 'selenium-webdriver';
@@ -13,24 +13,28 @@ import { timeout } from 'q';
 })
 export class TypeNumComponent {
 
-  public generated_num_rows: Array<NumRow> = new Array<NumRow>();
   public remain_seconds: number = 0;
   public start_count: boolean = false;
   public end_count: boolean = false;
 
   private test_time: number = 5;
+  public row_count: number = 15;
   public line_per_minute: number = 0;
   public min: number = 0;
   public sec: number = 0;
+  public generated_num_rows: Array<NumRow> = new Array<NumRow>(this.row_count);
+  public generated_num_rows_color: Array<NumRowColor> = new Array<NumRowColor>(this.row_count);
+  public input_rows: Array<string> = new Array<string>(this.row_count);
+  public input_rows_check: Array<string> = new Array<string>(this.row_count);
 
   private http_client: HttpClient = null;
   private base_url: string = null;
 
   constructor(http: HttpClient, @Inject('BASE_URL') base_url: string,
-    private notify: ElNotificationService, private message: ElMessageService,) {
+    private notify: ElNotificationService, private message: ElMessageService, private element_ref: ElementRef) {
     this.http_client = http;
     this.base_url = base_url;
-    this.GenerateNums();
+    this.RefreshNums();
   }
 
   public PostRecord(_uname: string, _grade: number): void {
@@ -40,32 +44,29 @@ export class TypeNumComponent {
     this.end_count = false;
   }
 
-  //生成输入的随机数字
-  public GenerateNums(): void {
-    for (var i = 0; i < 15; i++) {
-      var num_row: NumRow = {
-        num1: Math.ceil(Math.random() * 999),
-        num2: Math.ceil(Math.random() * 999),
-        num3: Number(Math.ceil(Math.random() * 99999) / 100)
-      };
-      this.generated_num_rows.push(num_row);
-    }
-  }
-
   //刷新随机数字
   public RefreshNums(): void {
-    for (var i = 0; i < 15; i++) {
+    for (var i = 0; i < this.row_count; i++) {
       var num_row: NumRow = {
         num1: Math.ceil(Math.random() * 999),
         num2: Math.ceil(Math.random() * 999),
         num3: Number(Math.ceil(Math.random() * 99999) / 100)
       };
+      var num_row_color: NumRowColor = {
+        num1_color: NumCheckStatus.Unchecked,
+        num2_color: NumCheckStatus.Unchecked,
+        num3_color: NumCheckStatus.Unchecked
+      };
       this.generated_num_rows[i] = num_row;
+      this.generated_num_rows_color[i] = num_row_color;
+      this.input_rows_check[i] = RowCheckStatus.Unchecked;
+  //    this.input_rows_check[i] = 'check-circle';
     }
   }
 
   //开始测试
   public BeginTest(): void {
+
     this.end_count = false;
     if (this.start_count) return;
     this.notify.setOptions({ duration: 2000 })
@@ -102,3 +103,22 @@ interface NumRow {
   num2: number;
   num3: number;
 }
+
+interface NumRowColor {
+  num1_color: string;
+  num2_color: string;
+  num3_color: string;
+}
+
+enum NumCheckStatus {
+  Unchecked = 'blue',
+  Right = 'limegreen',
+  Wrong = 'red'
+}
+
+enum RowCheckStatus {
+  Unchecked = 'loading',
+  Right = 'check',
+  Wrong = 'close'
+}
+

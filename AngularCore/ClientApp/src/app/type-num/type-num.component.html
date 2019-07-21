@@ -6,14 +6,22 @@
   <div el-container>
     <div el-aside align="center" width="32%"></div>
     <div el-aside align="center" width="36%">
-      <el-input *ngFor="let num_row of generated_num_rows"
-                placeholder="输入内容以开始计时" maxlength="16">
+      <el-input *ngFor="let num_row of generated_num_rows; let i = index" [icon]="input_rows_check[i]"
+                [(model)]="input_rows[i]" placeholder="输入内容以开始计时" maxlength="16">
         <ng-template #prepend>
+          <code [ngStyle]="{'background-color': '#f5f7fa','color':generated_num_rows_color[i].num1_color}">{{num_row.num1 | number:'3.0'}}</code>
+          <code [ngStyle]="{'background-color': '#f5f7fa','color':generated_num_rows_color[i].num2_color}">{{num_row.num2 | number:'3.0'}}</code>
+          <code [ngStyle]="{'background-color': '#f5f7fa','color':generated_num_rows_color[i].num3_color}">{{num_row.num3 | number:'3.2'}}</code>
+        </ng-template>
+      </el-input>
+      <!--div class="input-group" *ngFor="let num_row of generated_num_rows; let i = index" >
+        <span class="input-group-addon" id="sizing-addon1" style="background-color:greenyellow">
           <code style="color:blue; background:none;">{{num_row.num1 | number:'3.0'}}</code>
           <code style="color:blue; background:none;">{{num_row.num2 | number:'3.0'}}</code>
           <code style="color:blue; background:none;">{{num_row.num3 | number:'3.2'}}</code>
-        </ng-template>
-      </el-input>
+        </span>
+        <input type="text" class="form-control"  placeholder="输入内容以开始计时" maxlength="16">
+      </div-->
     </div>
     <div el-aside align="center" width="6%"></div>
     <div el-aside align="center" width="20%">
@@ -23,7 +31,7 @@
         <div>录入速度：{{line_per_minute}}行/分钟</div>
       </el-card>
     </div>
-    <el-dialog [close-on-click-modal]="false" [(visible)]="end_count">
+    <el-dialog [close-on-click-modal]="false" [(visible)]="end_count" [center]="true">
       <ng-template #title>
         <span>测试结束</span>
       </ng-template>

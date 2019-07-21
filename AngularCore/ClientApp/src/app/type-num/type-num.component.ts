@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { error } from 'protractor';
 import { ElNotificationService } from 'element-angular'
+import { ElMessageService } from 'element-angular'
 import { Timeouts } from 'selenium-webdriver';
 import { setTimeout } from 'timers';
 import { timeout } from 'q';
@@ -15,8 +16,9 @@ export class TypeNumComponent {
   public generated_num_rows: Array<NumRow> = new Array<NumRow>();
   public remain_seconds: number = 0;
   public start_count: boolean = false;
+  public end_count: boolean = false;
 
-  private test_time: number = 180;
+  private test_time: number = 5;
   public line_per_minute: number = 0;
   public min: number = 0;
   public sec: number = 0;
@@ -25,16 +27,17 @@ export class TypeNumComponent {
   private base_url: string = null;
 
   constructor(http: HttpClient, @Inject('BASE_URL') base_url: string,
-    private notify: ElNotificationService) {
+    private notify: ElNotificationService, private message: ElMessageService,) {
     this.http_client = http;
     this.base_url = base_url;
     this.GenerateNums();
   }
 
-  public PostRecord(): void {
-    var record = { uname: '123', grade: 456 };
+  public PostRecord(_uname: string, _grade: number): void {
+    var record = { uname: _uname, grade: _grade };
     this.http_client.post<MyResponse>(this.base_url + 'api/TypeNum/RecvPost', record).
-      subscribe(response => alert(response.msg), error => console.log(error));
+      subscribe(response => this.message['success']('提交成功'), error => this.message['error']('提交失败' + error));
+    this.end_count = false;
   }
 
   //生成输入的随机数字
@@ -63,6 +66,7 @@ export class TypeNumComponent {
 
   //开始测试
   public BeginTest(): void {
+    this.end_count = false;
     if (this.start_count) return;
     this.notify.setOptions({ duration: 2000 })
     this.notify['success']('计时3分钟，每页15行', '开始测试')
@@ -83,6 +87,7 @@ export class TypeNumComponent {
     }
     else {
       this.start_count = false;
+      this.end_count = true;
     }
   }
 

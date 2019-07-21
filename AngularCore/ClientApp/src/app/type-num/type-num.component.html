@@ -23,9 +23,18 @@
         <div>录入速度：{{line_per_minute}}行/分钟</div>
       </el-card>
     </div>
+    <el-dialog [close-on-click-modal]="false" [(visible)]="end_count">
+      <ng-template #title>
+        <span>测试结束</span>
+      </ng-template>
+      <span>提交成绩</span>
+      <ng-template #footer>
+        <el-button (click)="PostRecord()">确定</el-button>
+      </ng-template>
+    </el-dialog>
     <div el-aside align="center" width="6%"></div>
   </div>
-  </div>
+ </div>
 
   <div>
 

@@ -6,5 +6,8 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './type-ch.component.html'
 })
 export class TypeChComponent {
-
+  public count: number = 0;
+  public onInputFocus() {
+    this.count++;
+  }
 }

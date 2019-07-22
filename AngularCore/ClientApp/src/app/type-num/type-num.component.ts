@@ -1,4 +1,4 @@
-import { Component, Inject, ElementRef } from '@angular/core';
+import { Component, Inject, ElementRef, ViewChildren, ViewChild, QueryList } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { error, element } from 'protractor';
 import { ElNotificationService } from 'element-angular'
@@ -6,6 +6,7 @@ import { ElMessageService } from 'element-angular'
 import { Timeouts } from 'selenium-webdriver';
 import { setTimeout } from 'timers';
 import { timeout } from 'q';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-type-num',
@@ -18,7 +19,7 @@ export class TypeNumComponent {
   public end_count: boolean = false;
   public uname: string = '';
 
-  private test_time: number = 5;
+  private test_time: number = 30;
   public row_count: number = 15;
   public row_per_minute: number = 0;
   public right_row_count: number = 0;
@@ -29,11 +30,19 @@ export class TypeNumComponent {
   public generated_num_rows_color: Array<NumRowColor> = new Array<NumRowColor>(this.row_count);
   public input_rows: Array<string> = new Array<string>(this.row_count);
   public input_rows_check: Array<string> = new Array<string>(this.row_count);
-  public current_focus: number = 0;
-  public focus: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+  public current_focus_row: number = 0;
 
   private http_client: HttpClient = null;
   private base_url: string = null;
+
+  private input_elems: Array<any>;    //element-ui组件与原生组件不同
+  @ViewChildren('inputs') input_doms: QueryList<ElementRef>;
+  ngAfterViewInit() { // or some event handler
+    this.input_elems = this.input_doms.toArray();
+  /*  for (var prop in this.input_elems[0]) {
+      alert(prop + '\n' + this.input_doms[prop]);
+    }  */
+  }
 
   constructor(http: HttpClient, @Inject('BASE_URL') base_url: string,
     private notify: ElNotificationService, private message: ElMessageService, private element_ref: ElementRef) {
@@ -73,6 +82,8 @@ export class TypeNumComponent {
   //开始测试
   public BeginTest(): void {
     this.end_count = false;
+    this.right_row_count = 0;
+    this.row_per_minute = 0;
     if (this.start_count) return;
     this.notify.setOptions({ duration: 3000 })
     this.notify['success']('计时3分钟，每页15行，按回车换行', '开始测试')
@@ -100,25 +111,54 @@ export class TypeNumComponent {
 
   //input框触发按键事件的回调函数
   public OnKeyPress(event: any) {
+    var cur = this.current_focus_row;
     if (!this.start_count)
       this.BeginTest();
     var keycode = window.event ? event.keyCode : event.which;   //获取按键编码
     if (keycode == 13) {    //回车
-      alert(this.current_focus);
+      this.Judge(cur);
     }
     else if ((keycode >= 0x30 && keycode <= 0x39) || keycode == 46) {   //小键盘数字
-      if (this.input_rows[0].length == 3 || this.input_rows[0].length == 8)
-        this.input_rows[0] += ", ";
+      if (this.input_rows[cur].length == 3 || this.input_rows[cur].length == 8)
+        this.input_rows[cur] += ", ";
     }
     else return false;
   }
 
   public OnKeyDown(event: any) {
+    var cur = this.current_focus_row;
     var keycode = window.event ? event.keyCode : event.which;   //获取按键编码
     if (keycode == 8) {         //退格
-      if (this.input_rows[0].length == 5 || this.input_rows[0].length == 10)
-        this.input_rows[0] = this.input_rows[0].substring(0, this.input_rows[0].length - 2);
+      if (this.input_rows[cur].length == 5 || this.input_rows[cur].length == 10)
+        this.input_rows[cur] = this.input_rows[cur].substring(0, this.input_rows[cur].length - 2);
     }
+  }
+
+  public Judge(index: number) {
+    var input_nums = this.input_rows[index].split(', ');
+    var generated_nums = this.generated_num_rows[index];
+    var row_color = this.generated_num_rows_color[index];
+    var i: number = 0;
+    var right_row: boolean = true;
+    for (var prop in generated_nums) {
+      if (parseFloat(input_nums[i]) == generated_nums[prop])
+        row_color[prop + '_color'] = NumCheckStatus.Right;
+      else {
+        row_color[prop + '_color'] = NumCheckStatus.Wrong;
+        right_row = false;
+      }
+      i++;
+    }
+    if (right_row) {
+      this.input_rows_check[index] = RowCheckStatus.Right;
+      this.right_row_count++;
+      this.row_per_minute = this.right_row_count / this.test_time * 60;
+    }
+    else {
+      this.input_rows_check[index] = RowCheckStatus.Wrong;
+    }
+    this.input_elems[index].focus = 0;
+    this.input_elems[index].blur = 0;
   }
 
 }

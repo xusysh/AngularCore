@@ -7,7 +7,8 @@
     <div el-aside align="center" width="32%"></div>
     <div el-aside align="center" width="36%">
       <el-input *ngFor="let num_row of generated_num_rows; let i = index" [icon]="input_rows_check[i]"
-                [(model)]="input_rows[i]" placeholder="输入内容以开始计时" maxlength="16">
+                [(model)]="input_rows[i]" placeholder="输入内容以开始计时" maxlength="16"
+                ng-focus="current_focus=2" id="input{{i}}" (keypress)="OnKeyPress($event)" (keydown)="OnKeyDown($event)">
         <ng-template #prepend>
           <code [ngStyle]="{'background-color': '#f5f7fa','color':generated_num_rows_color[i].num1_color}">{{num_row.num1 | number:'3.0'}}</code>
           <code [ngStyle]="{'background-color': '#f5f7fa','color':generated_num_rows_color[i].num2_color}">{{num_row.num2 | number:'3.0'}}</code>
@@ -25,19 +26,31 @@
     </div>
     <div el-aside align="center" width="6%"></div>
     <div el-aside align="center" width="20%">
-      <button (click)="BeginTest()">开始测试</button>
       <el-card class="box-card" *ngIf="start_count">
         <div>剩余时间：{{min}}分{{sec | number:'2.0'}}秒</div>
-        <div>录入速度：{{line_per_minute}}行/分钟</div>
+        <div>录入速度：{{row_per_minute}}行/分钟</div>
       </el-card>
     </div>
-    <el-dialog [close-on-click-modal]="false" [(visible)]="end_count" [center]="true">
+    <el-dialog [close-on-click-modal]="false" [(visible)]="end_count" [center]="true"
+               width="30%" height="20%">
       <ng-template #title>
-        <span>测试结束</span>
+        <span>
+          <strong>测试结束</strong>
+        </span>
       </ng-template>
-      <span>提交成绩</span>
+      <div style="text-align:center">录入正确行数:{{right_row_count}}行</div>
+      <div style="text-align:center">录入速度:{{row_per_minute}}行/分钟</div>
       <ng-template #footer>
-        <el-button (click)="PostRecord()">确定</el-button>
+        <div el-container>
+          <div el-aside align="center" width="20%"></div>
+          <div el-aside align="center" width="40%">
+            <el-input placeholder="输入昵称，默认为匿名" maxlength="20"  type="text"
+                      autocomplete="on" [(model)]="uname"></el-input>
+          </div>
+          <div el-aside align="center" width="30%">
+            <el-button (click)="PostRecord()" type="primary">提交成绩</el-button>
+          </div>
+        </div>
       </ng-template>
     </el-dialog>
     <div el-aside align="center" width="6%"></div>

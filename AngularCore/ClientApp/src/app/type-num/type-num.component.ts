@@ -16,16 +16,21 @@ export class TypeNumComponent {
   public remain_seconds: number = 0;
   public start_count: boolean = false;
   public end_count: boolean = false;
+  public uname: string = '';
 
   private test_time: number = 5;
   public row_count: number = 15;
-  public line_per_minute: number = 0;
+  public row_per_minute: number = 0;
+  public right_row_count: number = 0;
   public min: number = 0;
   public sec: number = 0;
+
   public generated_num_rows: Array<NumRow> = new Array<NumRow>(this.row_count);
   public generated_num_rows_color: Array<NumRowColor> = new Array<NumRowColor>(this.row_count);
   public input_rows: Array<string> = new Array<string>(this.row_count);
   public input_rows_check: Array<string> = new Array<string>(this.row_count);
+  public current_focus: number = 0;
+  public focus: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 
   private http_client: HttpClient = null;
   private base_url: string = null;
@@ -37,8 +42,9 @@ export class TypeNumComponent {
     this.RefreshNums();
   }
 
-  public PostRecord(_uname: string, _grade: number): void {
-    var record = { uname: _uname, grade: _grade };
+  //提交记录
+  public PostRecord(): void {
+    var record = { id: 0, uname: this.uname === '' ? '匿名' : this.uname, grade: this.row_per_minute };
     this.http_client.post<MyResponse>(this.base_url + 'api/TypeNum/RecvPost', record).
       subscribe(response => this.message['success']('提交成功'), error => this.message['error']('提交失败' + error));
     this.end_count = false;
@@ -59,18 +65,17 @@ export class TypeNumComponent {
       };
       this.generated_num_rows[i] = num_row;
       this.generated_num_rows_color[i] = num_row_color;
+      this.input_rows[i] = '';
       this.input_rows_check[i] = RowCheckStatus.Unchecked;
-  //    this.input_rows_check[i] = 'check-circle';
     }
   }
 
   //开始测试
   public BeginTest(): void {
-
     this.end_count = false;
     if (this.start_count) return;
-    this.notify.setOptions({ duration: 2000 })
-    this.notify['success']('计时3分钟，每页15行', '开始测试')
+    this.notify.setOptions({ duration: 3000 })
+    this.notify['success']('计时3分钟，每页15行，按回车换行', '开始测试')
     this.start_count = true;
     this.remain_seconds = this.test_time + 1;
     this.CountDown();
@@ -86,9 +91,33 @@ export class TypeNumComponent {
         this.CountDown()
       }, 1000);
     }
-    else {
+    else {      //时间到，测试结束
       this.start_count = false;
       this.end_count = true;
+      this.RefreshNums();
+    }
+  }
+
+  //input框触发按键事件的回调函数
+  public OnKeyPress(event: any) {
+    if (!this.start_count)
+      this.BeginTest();
+    var keycode = window.event ? event.keyCode : event.which;   //获取按键编码
+    if (keycode == 13) {    //回车
+      alert(this.current_focus);
+    }
+    else if ((keycode >= 0x30 && keycode <= 0x39) || keycode == 46) {   //小键盘数字
+      if (this.input_rows[0].length == 3 || this.input_rows[0].length == 8)
+        this.input_rows[0] += ", ";
+    }
+    else return false;
+  }
+
+  public OnKeyDown(event: any) {
+    var keycode = window.event ? event.keyCode : event.which;   //获取按键编码
+    if (keycode == 8) {         //退格
+      if (this.input_rows[0].length == 5 || this.input_rows[0].length == 10)
+        this.input_rows[0] = this.input_rows[0].substring(0, this.input_rows[0].length - 2);
     }
   }
 

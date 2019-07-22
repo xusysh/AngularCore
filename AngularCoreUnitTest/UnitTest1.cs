@@ -9,6 +9,7 @@ namespace AngularCoreUnitTest
     public class UnitTest1
     {
         CheckRecordsController checkRecordsController = new CheckRecordsController();
+        TypeNumController typeNumController = new TypeNumController();
 
         [TestMethod]
         public void InsertComment_Test()
@@ -29,5 +30,18 @@ namespace AngularCoreUnitTest
             var result = checkRecordsController.GetComments();
             result.GetEnumerator();
         }
+
+        [TestMethod]
+        public void PostRecord_Test()
+        {
+            Record record = new Record
+            {
+                id = 0,
+                uname = "asd",
+                grade = 60
+            };
+            typeNumController.RecvPost(record);
+        }
+
     }
 }

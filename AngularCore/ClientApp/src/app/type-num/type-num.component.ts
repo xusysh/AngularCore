@@ -59,7 +59,10 @@ export class TypeNumComponent {
 
   //提交记录
   public PostRecord(): void {
-    var record = { id: 0, uname: this.uname === '' ? '匿名' : this.uname, grade: this.row_per_minute };
+    var record = {
+      id: 0, uname: this.uname === '' ? '匿名' : this.uname,
+      grade: Math.round(this.row_per_minute)
+    };
     this.http_client.post<MyResponse>(this.base_url + 'api/TypeNum/RecvPost', record).
       subscribe(response => this.message['success']('提交成功'), error => this.message['error']('提交失败' + error));
     this.end_count = false;
@@ -123,7 +126,7 @@ export class TypeNumComponent {
     var keycode = window.event ? event.keyCode : event.which;   //获取按键编码
     if (keycode == 13) {    //回车
       this.Judge(cur);
-      this.NextInput(cur);
+      this.NextInput();
     }
     else if ((keycode >= 0x30 && keycode <= 0x39) || keycode == 46) {   //小键盘数字
       if (this.input_rows[cur].length == 3 || this.input_rows[cur].length == 8)
@@ -160,7 +163,7 @@ export class TypeNumComponent {
     if (right_row) {
       this.input_rows_check[index] = RowCheckStatus.Right;
       this.right_row_count++;
-      this.row_per_minute = this.right_row_count / this.test_time * 60;
+      this.row_per_minute = this.right_row_count / (this.test_time - this.remain_seconds) * 60;
     }
     else {
       this.input_rows_check[index] = RowCheckStatus.Wrong;
@@ -168,7 +171,7 @@ export class TypeNumComponent {
   }
 
   //切换到下一个输入框
-  public NextInput(index): void {
+  public NextInput(): void {
     this.inputs[this.current_focus_row].blur();
     if (this.current_focus_row == 14) {
       this.RefreshNums();

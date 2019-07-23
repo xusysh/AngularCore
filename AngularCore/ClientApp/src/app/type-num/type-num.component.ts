@@ -1,4 +1,4 @@
-import { Component, Inject, ElementRef, ViewChildren, ViewChild, QueryList } from '@angular/core';
+import { Component, Inject, ElementRef, ViewChildren, ViewChild, QueryList, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { error, element } from 'protractor';
 import { ElNotificationService } from 'element-angular'
@@ -35,13 +35,19 @@ export class TypeNumComponent {
   private http_client: HttpClient = null;
   private base_url: string = null;
 
-  private input_elems: Array<any>;    //element-ui组件与原生组件不同
+  //element angular里的组件与原生的不同，所以放弃标准的angular方法
+  //定义为any防止类型检查报错，实际类型为HtmlCollectionOf<Element>
+  private inputs: any = document.getElementsByClassName('el-input__inner');
+  /* 
+  private input_elems: Array<any>;   
   @ViewChildren('inputs') input_doms: QueryList<ElementRef>;
-  ngAfterViewInit() { // or some event handler
-    this.input_elems = this.input_doms.toArray();
-  /*  for (var prop in this.input_elems[0]) {
+  */
+  ngAfterViewInit() { 
+ /*   this.input_elems = this.input_doms.toArray();
+    for (var prop in this.input_elems[0]) {
       alert(prop + '\n' + this.input_doms[prop]);
-    }  */
+    } */
+    this.inputs[this.current_focus_row].focus();
   }
 
   constructor(http: HttpClient, @Inject('BASE_URL') base_url: string,
@@ -117,6 +123,7 @@ export class TypeNumComponent {
     var keycode = window.event ? event.keyCode : event.which;   //获取按键编码
     if (keycode == 13) {    //回车
       this.Judge(cur);
+      this.NextInput(cur);
     }
     else if ((keycode >= 0x30 && keycode <= 0x39) || keycode == 46) {   //小键盘数字
       if (this.input_rows[cur].length == 3 || this.input_rows[cur].length == 8)
@@ -134,6 +141,7 @@ export class TypeNumComponent {
     }
   }
 
+  //判断输入数字是否正确并改变颜色和图标显示
   public Judge(index: number) {
     var input_nums = this.input_rows[index].split(', ');
     var generated_nums = this.generated_num_rows[index];
@@ -157,8 +165,35 @@ export class TypeNumComponent {
     else {
       this.input_rows_check[index] = RowCheckStatus.Wrong;
     }
-    this.input_elems[index].focus = 0;
-    this.input_elems[index].blur = 0;
+  }
+
+  //切换到下一个输入框
+  public NextInput(index): void {
+    this.inputs[this.current_focus_row].blur();
+    if (this.current_focus_row == 14) {
+      this.RefreshNums();
+      this.current_focus_row = 0;
+    }
+    else {
+      this.current_focus_row++;
+    }
+    //设置延时器，配合网页渲染
+    setTimeout(() => { this.inputs[this.current_focus_row].focus(); }, 50);
+  }
+
+  //遍历一个对象属性并输出
+  public Intercept(obj: any): string {
+    var output: string = '';
+    for (let prop in obj) {
+      output += prop + '  ' + obj[prop] + '\n';
+      output += '************' + prop + '************\n'
+      let sub_elem = obj[prop];
+      for (let sub_prop in sub_elem) {
+        output += sub_prop + '  ' + sub_elem[sub_prop] + '\n';
+        output += '-----------------------------\n';
+      }
+    }
+    return output;
   }
 
 }

@@ -8,7 +8,7 @@
     <div el-aside align="center" width="36%">
       <el-input #inputs *ngFor="let num_row of generated_num_rows; let i = index"
                 [icon]="input_rows_check[i]" [(model)]="input_rows[i]" placeholder="输入内容以开始计时"
-                maxlength="16" (focus)="current_focus_row = i"
+                maxlength="16" (focus)="current_focus_row = i" id="'input'+i"
                 (keypress)="OnKeyPress($event)" (keydown)="OnKeyDown($event)">
         <ng-template #prepend>
           <code [ngStyle]="{'background-color': '#f5f7fa','color':generated_num_rows_color[i].num1_color}">{{num_row.num1 | number:'3.0'}}</code>

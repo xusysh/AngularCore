@@ -1,31 +1,74 @@
 import { Component, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { ElMessageService, ElNotificationService } from 'element-angular'
+import { setTimeout } from 'timers';
 
 @Component({
   selector: 'app-check-records',
   templateUrl: './check-records.component.html',
 })
 export class CheckRecordsComponent {
+  public records: Array<Record> = null;
   public comments: Array<Comment> = null;
-  private httpClient: HttpClient = null;
-  private baseUrl: string = null;
+  private http_client: HttpClient = null;
+  private base_url: string = null;
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    this.httpClient = http;
-    this.baseUrl = baseUrl;
+  public input_content: string = null;
+  public input_uname: string = null;
+
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string,
+    private notify: ElNotificationService, private message: ElMessageService) {
+    this.http_client = http;
+    this.base_url = baseUrl;
     this.GetComments();
   }
 
   public GetComments() {
-    this.httpClient.get<Comment[]>(this.baseUrl + 'api/CheckRecords/GetComments').subscribe(
+    this.http_client.get<Comment[]>(this.base_url + 'api/CheckRecords/GetComments').subscribe(
       data => this.comments = data,
       error => console.error(error));
   }
+
+  public PostComment() {
+    var comment = {
+      id: 0,
+      uname: this.input_uname === '' ? '匿名' : this.input_uname,
+      content: this.input_content,
+      datetime: new Date()
+    };
+    this.http_client.post<MyResponse>(this.base_url + 'api/CheckRecords/RecvComment', comment).
+      subscribe(response => this.message['success']('提交成功'), error => this.message['error']('提交失败' + error));
+    this.comments = null;
+    setTimeout(() => { this.GetComments(); }, 500);
+  }
+
+  public CheckRecords() {
+    var uname: Uname = {
+      uname: this.input_uname
+    };
+    this.http_client.post<Record[]>(this.base_url + 'api/CheckRecords/RecvComment', uname).
+      subscribe(data => this.records = data, error => this.message['error']('查询失败' + error));
+  }
+
+}
+
+interface MyResponse {
+  msg: string;
 }
 
 interface Comment {
-  id: number;
-  uname: string;
-  content: string;
-  datetime: Date;
+  id: number,
+  uname: string,
+  content: string,
+  datetime: Date
+}
+
+interface Uname {
+  uname: string
+}
+
+interface Record {
+  id: number,
+  uname: string,
+  grade: number
 }

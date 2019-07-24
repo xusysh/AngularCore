@@ -57,7 +57,8 @@ export class TypeNumComponent {
   //提交记录
   public PostRecord(): void {
     var record = {
-      id: 0, uname: this.uname === '' ? '匿名' : this.uname,
+      id: 0,
+      uname: this.uname === '' ? '匿名' : this.uname,
       grade: Math.round(this.row_per_minute)
     };
     this.http_client.post<MyResponse>(this.base_url + 'api/TypeNum/RecvPost', record).

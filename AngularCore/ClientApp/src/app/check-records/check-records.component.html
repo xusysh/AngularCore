@@ -1,20 +1,49 @@
-<h1 align="center">查看纪录</h1>
+<div el-container direction="vertical" class="type-ch-container">
+  <div el-header>
+    <h1 align="center">查看纪录</h1>
+  </div>
+  <div el-header height="15px"></div>
+  <div el-container>
 
-<p *ngIf="!comments">
-  <em>
-    <div class="demo" [el-loading]="true" [text]="'拼命加载中'">
-      <el-tag>加载中..</el-tag>
+  </div>
+</div>
+
+<div class="panel panel-default" height="700px">
+  <div class="panel-heading" style="text-align:center">留言&反馈</div>
+  <div class="panel-body">
+    <div *ngIf="!comments">
+      <div style="min-height:1px; height:20px"></div>
+      <em>
+        <div class="demo" [el-loading]="true" [text]="'拼命加载中'">
+          <el-tag>加载中..</el-tag>
+        </div>
+      </em>
+      <div style="min-height:1px; height:50px"></div>
     </div>
-  </em>
-</p>
+    <div *ngIf="comments">
+      <el-input type="textarea"
+                [autosize]="{ minRows: 4, maxRows: 8}"
+                placeholder="输入评论"
+                [(model)]="input_content">
+      </el-input>
+      <div style="min-height:1px; height:10px"></div>
+      <el-button style="float: right;" type="primary" (click)="PostComment()">提交评论</el-button>
+      <div style="min-height:1px; height:10px"></div>
+      <el-button style="float: right;" type="primary" (click)="CheckRecords()">查询记录</el-button>
+      <div style="float:right; min-height:1px; height:10px; min-width:10px; width:10px;"></div>
+      <el-input style="float: right;" placeholder="输入id" [(model)]="input_uname"></el-input>
+    </div>
+    <div style="min-height:1px; height:10px"></div>
+    <el-table [model]="comments" height="400px" *ngIf="comments">
+      <el-table-column model-key="id" label="楼层" width="100">
+      </el-table-column>
+      <el-table-column model-key="uname" label="用户昵称" width="200">
+      </el-table-column>
+      <el-table-column model-key="content" label="评论">
+      </el-table-column>
+      <el-table-column model-key="datetime" label="时间">
+      </el-table-column>
+    </el-table>
+  </div>
 
-<el-table [model]="comments" height="50%" *ngIf="comments">
-  <el-table-column model-key="id" label="楼层" width="100">
-  </el-table-column>
-  <el-table-column model-key="uname" label="用户昵称" width="200">
-  </el-table-column>
-  <el-table-column model-key="content" label="评论">
-  </el-table-column>
-  <el-table-column model-key="datetime" label="时间">
-  </el-table-column>
-</el-table>
+</div>

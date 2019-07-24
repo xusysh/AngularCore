@@ -22,6 +22,51 @@ namespace AngularCore.Controllers
         }
 
         [HttpPost("[action]")]
+        public IEnumerable<Record> GetRecords([FromBody]Uname uname)
+        {
+            int type_num_avg_grade = db_service.GetAvgElem("type_num_records", "grade");
+            var type_num_highest_record = db_service.GetRecords<Record>("type_num_records",null,null, "order by grade desc");
+            int type_ch_avg_grade = db_service.GetAvgElem("type_ch_records", "grade");
+            var type_ch_highest_record = db_service.GetRecords<Record>("type_ch_records");
+
+            int type_num_avg_grade_user = db_service.GetAvgElem("type_num_records", "grade", "uname", $"'{uname.uname}'");
+            var type_num_highest_record_user = db_service.GetRecords<Record>("type_num_records", "uname", $"'{uname.uname}'",
+                "order by grade desc");
+            int type_ch_avg_grade_user = db_service.GetAvgElem("type_ch_records", "grade", "uname", $"'{uname.uname}'");
+            var type_ch_highest_record_user = db_service.GetRecords<Record>("type_ch_records", "uname", $"'{uname.uname}'",
+                "order by grade desc");
+
+            List<Record> records = new List<Record>();
+
+            var record = new Record();
+            record.grade = type_num_avg_grade;
+            records.Add(record);
+            records.Add(type_num_highest_record.First());
+            record = new Record();
+            record.grade = type_ch_avg_grade;
+            records.Add(record);
+            records.Add(type_ch_highest_record.First());
+
+            record = new Record();
+            record.grade = type_num_avg_grade_user;
+            records.Add(record);
+            records.Add(type_num_highest_record_user.First());
+            record = new Record();
+            record.grade = type_ch_avg_grade_user;
+            records.Add(record);
+            records.Add(type_ch_highest_record_user.First());
+
+            return records.AsEnumerable();
+        }
+
+        [HttpPost("[action]")]
+        public MyResponse RecvComment([FromBody]Comment comment)
+        {
+            db_service.InsertRecord(comment, "comments");
+            return new MyResponse("post received");
+        }
+
+        [HttpPost("[action]")]
         public void InsertComment([FromBody]Comment comment)
         {
             try
@@ -43,6 +88,11 @@ namespace AngularCore.Controllers
         public string uname;
         public string content;
         public DateTime datetime;
+    }
+
+    public class Uname
+    {
+        public string uname;
     }
 
 }

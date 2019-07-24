@@ -52,9 +52,9 @@ namespace AngularCore.Services
                 string cmd = $"insert into {table_name} values(";
                 foreach (var field in fields)
                 {
-                    if (typeof(string).Equals(field.FieldType))
+                    if (typeof(string).Equals(field.FieldType) || typeof(DateTime).Equals(field.FieldType))
                         cmd += $"'{field.GetValue(obj)}',";
-                    else 
+                    else
                         cmd += $"{field.GetValue(obj)},";
                 }
                 cmd = cmd.Substring(0, cmd.Length - 1);         //删除多余的逗号
@@ -108,6 +108,7 @@ namespace AngularCore.Services
                     //添加一个对象（一行）
                     objs.Add(obj);
                 }
+                reader.Close();
                 return objs.AsEnumerable();
             }
             catch (Exception ex)
@@ -116,5 +117,31 @@ namespace AngularCore.Services
                 throw;
             }
         }
+
+        //从数据库获取某个元素的平均值
+        public int GetAvgElem(string table_name,string elem_name,
+            string key = null, string value = null, string options = null)
+        {
+            try
+            {
+                //生成格式化查询语句
+                string cmd = $"select round(avg({elem_name})) from {table_name}" +
+                    $"{(key == null ? "" : $" where {key} = ")}{value}" +
+                    $"{(options == null ? "" : $" {options}")}";
+                //进行查询
+                var command = new MySqlCommand(cmd, connection);
+                MySqlDataReader reader = command.ExecuteReader();
+                reader.Read();
+                int val = Convert.ToInt32(reader.GetValue(0));
+                reader.Close();
+                return val;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error from Services.DatabaseService.GetRecords:{ex.Message}");
+                throw;
+            }
+        }
+
     }
 }

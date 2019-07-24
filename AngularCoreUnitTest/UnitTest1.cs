@@ -43,5 +43,15 @@ namespace AngularCoreUnitTest
             typeNumController.RecvPost(record);
         }
 
+        [TestMethod]
+        public void GetRecords_Test()
+        {
+            Uname uname = new Uname
+            {
+                uname = "test1",
+            };
+            checkRecordsController.GetRecords(uname);
+        }
+
     }
 }

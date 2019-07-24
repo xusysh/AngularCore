@@ -49,7 +49,7 @@ export class TypeChComponent {
 
   //刷新汉字
   public RefreshCHs(): void {
-    alert(this.random_ch.simplified());
+ //   alert(this.random_ch.simplified());
   }
 
   //开始测试

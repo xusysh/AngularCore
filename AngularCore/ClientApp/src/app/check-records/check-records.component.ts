@@ -15,6 +15,7 @@ export class CheckRecordsComponent {
 
   public input_content: string = null;
   public input_uname: string = null;
+  public active_search: boolean = false;
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string,
     private notify: ElNotificationService, private message: ElMessageService) {
@@ -47,7 +48,12 @@ export class CheckRecordsComponent {
       uname: this.input_uname
     };
     this.http_client.post<Record[]>(this.base_url + 'api/CheckRecords/RecvComment', uname).
-      subscribe(data => this.records = data, error => this.message['error']('查询失败' + error));
+      subscribe(data => {
+        this.records = data;
+        this.active_search = true;
+        this.message['success']('查询成功')
+      }, error => this.message['error']('查询失败' + error));
+
   }
 
 }

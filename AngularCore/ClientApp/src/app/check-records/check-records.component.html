@@ -28,12 +28,12 @@
       </el-input>
       <div style="min-height:1px; height:10px"></div>
       <el-button style="float: right;" type="primary" (click)="PostComment()">提交评论</el-button>
-      <div style="min-height:1px; height:10px"></div>
+      <div style="float:right; min-height:1px; height:10px; min-width:10px; width:10px;"></div>
       <el-button style="float: right;" type="primary" (click)="CheckRecords()">查询记录</el-button>
       <div style="float:right; min-height:1px; height:10px; min-width:10px; width:10px;"></div>
       <el-input style="float: right;" placeholder="输入id" [(model)]="input_uname"></el-input>
     </div>
-    <div style="min-height:1px; height:10px"></div>
+    <div style="float:left; min-height:1px; height:10px; min-width:10px; width:10px; width:100%"></div>
     <el-table [model]="comments" height="400px" *ngIf="comments">
       <el-table-column model-key="id" label="楼层" width="100">
       </el-table-column>
@@ -45,5 +45,5 @@
       </el-table-column>
     </el-table>
   </div>
-
 </div>
+

@@ -19,7 +19,7 @@ export class TypeNumComponent {
   public end_count: boolean = false;
   public uname: string = '';
 
-  private test_time: number = 30;
+  private test_time: number = 180;
   public row_count: number = 15;
   public row_per_minute: number = 0;
   public right_row_count: number = 0;
@@ -61,7 +61,7 @@ export class TypeNumComponent {
   public PostRecord(): void {
     var record = {
       id: 0, uname: this.uname === '' ? '匿名' : this.uname,
-      grade: Math.round(this.row_per_minute)
+      grade: this.row_per_minute
     };
     this.http_client.post<MyResponse>(this.base_url + 'api/TypeNum/RecvPost', record).
       subscribe(response => this.message['success']('提交成功'), error => this.message['error']('提交失败' + error));
@@ -106,6 +106,7 @@ export class TypeNumComponent {
     this.remain_seconds--;
     this.min = Math.floor(this.remain_seconds / 60);
     this.sec = this.remain_seconds % 60;
+    this.row_per_minute = this.right_row_count / (this.test_time - this.remain_seconds) * 60;
     if (this.remain_seconds > 0) {
       setTimeout(() => {
         this.CountDown()
@@ -114,6 +115,7 @@ export class TypeNumComponent {
     else {      //时间到，测试结束
       this.start_count = false;
       this.end_count = true;
+      this.row_per_minute = this.right_row_count / (this.test_time - this.remain_seconds) * 60;
       this.RefreshNums();
     }
   }

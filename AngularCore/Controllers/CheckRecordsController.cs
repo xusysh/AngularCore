@@ -18,7 +18,7 @@ namespace AngularCore.Controllers
         [HttpGet("[action]")]
         public IEnumerable<Comment> GetComments()
         {
-            return db_service.GetRecords<Comment>("comments");
+            return db_service.GetRecords<Comment>("comments", null, null, "order by id desc");
         }
 
         [HttpPost("[action]")]

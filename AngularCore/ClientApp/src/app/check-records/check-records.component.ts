@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './check-records.component.html',
 })
 export class CheckRecordsComponent {
-  public comments: Comment[];
+  public comments: Array<Comment> = null;
   private httpClient: HttpClient = null;
   private baseUrl: string = null;
 

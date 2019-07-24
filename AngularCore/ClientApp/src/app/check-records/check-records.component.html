@@ -8,21 +8,13 @@
   </em>
 </p>
 
-<table class='table' *ngIf="comments">
-  <thead>
-    <tr>
-      <th>楼层</th>
-      <th>昵称</th>
-      <th>评论</th>
-      <th>时间</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let comment of comments">
-      <td>{{ comment.id }}</td>
-      <td>{{ comment.uname }}</td>
-      <td>{{ comment.content }}</td>
-      <td>{{ comment.datetime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-    </tr>
-  </tbody>
-</table>
+<el-table [model]="comments" height="50%" *ngIf="comments">
+  <el-table-column model-key="id" label="楼层" width="100">
+  </el-table-column>
+  <el-table-column model-key="uname" label="用户昵称" width="200">
+  </el-table-column>
+  <el-table-column model-key="content" label="评论">
+  </el-table-column>
+  <el-table-column model-key="datetime" label="时间">
+  </el-table-column>
+</el-table>

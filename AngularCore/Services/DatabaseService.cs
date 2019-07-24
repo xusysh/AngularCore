@@ -81,7 +81,8 @@ namespace AngularCore.Services
             {
                 //生成格式化查询语句
                 string cmd = $"select * from {table_name}" +
-                    $"{(key == null ? "" : $" where {key} = ")}{value}" + options;
+                    $"{(key == null ? "" : $" where {key} = ")}{value}" +
+                    $"{(options == null ? "" : $" {options}")}";
                 //进行查询
                 var command = new MySqlCommand(cmd, connection);
                 MySqlDataReader reader = command.ExecuteReader();

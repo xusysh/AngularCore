@@ -2,7 +2,6 @@ import { Component, Inject, ElementRef, ViewChildren, ViewChild, QueryList, Inpu
 import { HttpClient } from '@angular/common/http';
 import { ElNotificationService } from 'element-angular'
 import { ElMessageService } from 'element-angular'
-import { setTimeout } from 'timers';
 
 @Component({
   selector: 'app-type-num',

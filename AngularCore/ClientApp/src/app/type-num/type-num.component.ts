@@ -38,6 +38,7 @@ export class TypeNumComponent {
   private input_elems: Array<any>;   
   @ViewChildren('inputs') input_doms: QueryList<ElementRef>;
   */
+  //页面元素渲染成功后调用
   ngAfterViewInit() { 
  /*   this.input_elems = this.input_doms.toArray();
     for (var prop in this.input_elems[0]) {
@@ -46,6 +47,7 @@ export class TypeNumComponent {
     this.inputs[this.current_focus_row].focus();
   }
 
+  //构造函数（页面元素渲染成功前）
   constructor(http: HttpClient, @Inject('BASE_URL') base_url: string,
     private notify: ElNotificationService, private message: ElMessageService) {
     this.http_client = http;

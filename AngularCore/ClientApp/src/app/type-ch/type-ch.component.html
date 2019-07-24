@@ -1,6 +1,46 @@
-<button (focus)="onInputFocus()">
-  Increment
-</button>
-<span>
-  count: {{count}}
-</span>
+<div el-container direction="vertical" class="type-num-container">
+  <div el-header>
+    <h1 align="center">打字测试</h1>
+  </div>
+  <div el-header height="15px"></div>
+  <div el-container>
+    <div el-aside align="center" width="32%"></div>
+    <div el-aside align="center" width="36%">
+
+    </div>
+    <div el-aside align="center" width="6%"></div>
+    <div el-aside align="center" width="20%">
+      <el-card class="box-card" *ngIf="start_count">
+        <div>剩余时间：{{min}}分{{sec | number:'2.0'}}秒</div>
+        <div>录入速度：{{row_per_minute | number:'0.2'}}行/分钟</div>
+      </el-card>
+    </div>
+    <el-dialog [close-on-click-modal]="false" [(visible)]="end_count" [center]="true"
+               width="30%" height="20%">
+      <ng-template #title>
+        <span>
+          <strong>测试结束</strong>
+        </span>
+      </ng-template>
+      <div style="text-align:center">录入正确行数:{{right_row_count}}行</div>
+      <div style="text-align:center">录入速度:{{row_per_minute}}行/分钟</div>
+      <ng-template #footer>
+        <div el-container>
+          <div el-aside align="center" width="20%"></div>
+          <div el-aside align="center" width="40%">
+            <el-input placeholder="输入昵称，默认为匿名" maxlength="20" type="text"
+                      autocomplete="on" [(model)]="uname"></el-input>
+          </div>
+          <div el-aside align="center" width="30%">
+            <el-button (click)="PostRecord()" type="primary">提交成绩</el-button>
+          </div>
+        </div>
+      </ng-template>
+    </el-dialog>
+    <div el-aside align="center" width="6%"></div>
+  </div>
+</div>
+
+<div>
+
+</div>

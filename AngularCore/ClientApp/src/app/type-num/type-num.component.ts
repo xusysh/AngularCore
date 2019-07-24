@@ -1,37 +1,33 @@
 import { Component, Inject, ElementRef, ViewChildren, ViewChild, QueryList, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { error, element } from 'protractor';
 import { ElNotificationService } from 'element-angular'
 import { ElMessageService } from 'element-angular'
-import { Timeouts } from 'selenium-webdriver';
 import { setTimeout } from 'timers';
-import { timeout } from 'q';
-import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-type-num',
   templateUrl: './type-num.component.html'
 })
 export class TypeNumComponent {
-
+  //控制测试界面元素
+  public row_count: number = 15;
+  public test_time: number = 180;
+  public min: number = 0;
+  public sec: number = 0;
+  //测试数据&业务逻辑
+  public uname: string = '';
+  public row_per_minute: number = 0;
+  public right_row_count: number = 0;
   public remain_seconds: number = 0;
   public start_count: boolean = false;
   public end_count: boolean = false;
-  public uname: string = '';
-
-  private test_time: number = 180;
-  public row_count: number = 15;
-  public row_per_minute: number = 0;
-  public right_row_count: number = 0;
-  public min: number = 0;
-  public sec: number = 0;
-
+  //控制界面元素显示
   public generated_num_rows: Array<NumRow> = new Array<NumRow>(this.row_count);
   public generated_num_rows_color: Array<NumRowColor> = new Array<NumRowColor>(this.row_count);
   public input_rows: Array<string> = new Array<string>(this.row_count);
   public input_rows_check: Array<string> = new Array<string>(this.row_count);
   public current_focus_row: number = 0;
-
+  //提交http请求
   private http_client: HttpClient = null;
   private base_url: string = null;
 
@@ -51,7 +47,7 @@ export class TypeNumComponent {
   }
 
   constructor(http: HttpClient, @Inject('BASE_URL') base_url: string,
-    private notify: ElNotificationService, private message: ElMessageService, private element_ref: ElementRef) {
+    private notify: ElNotificationService, private message: ElMessageService) {
     this.http_client = http;
     this.base_url = base_url;
     this.RefreshNums();
@@ -61,7 +57,7 @@ export class TypeNumComponent {
   public PostRecord(): void {
     var record = {
       id: 0, uname: this.uname === '' ? '匿名' : this.uname,
-      grade: this.row_per_minute
+      grade: Math.round(this.row_per_minute)
     };
     this.http_client.post<MyResponse>(this.base_url + 'api/TypeNum/RecvPost', record).
       subscribe(response => this.message['success']('提交成功'), error => this.message['error']('提交失败' + error));

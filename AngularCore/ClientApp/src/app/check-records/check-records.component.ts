@@ -33,7 +33,7 @@ export class CheckRecordsComponent {
   public PostComment() {
     var comment = {
       id: 0,
-      uname: this.input_uname === '' ? '匿名' : this.input_uname,
+      uname: this.input_uname == '' ? '匿名' : this.input_uname,
       content: this.input_content,
       datetime: new Date()
     };
@@ -45,14 +45,14 @@ export class CheckRecordsComponent {
 
   public CheckRecords() {
     var uname: Uname = {
-      uname: this.input_uname
+      uname: this.input_uname == '' ? '匿名' : this.input_uname,
     };
-    this.http_client.post<Record[]>(this.base_url + 'api/CheckRecords/RecvComment', uname).
+    this.http_client.post<Record[]>(this.base_url + 'api/CheckRecords/GerRecords', uname).
       subscribe(data => {
         this.records = data;
         this.active_search = true;
         this.message['success']('查询成功')
-      }, error => this.message['error']('查询失败' + error));
+      }, error => this.message['error']('查询失败'));
 
   }
 

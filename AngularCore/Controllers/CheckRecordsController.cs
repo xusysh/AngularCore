@@ -50,12 +50,25 @@ namespace AngularCore.Controllers
             record = new Record();
             record.grade = type_num_avg_grade_user;
             records.Add(record);
-            records.Add(type_num_highest_record_user.First());
+            if (type_num_highest_record_user.Count() != 0)
+                records.Add(type_num_highest_record_user.First());
+            else
+            {
+                record = new Record();
+                record.grade = 0;
+                records.Add(record);
+            }
             record = new Record();
             record.grade = type_ch_avg_grade_user;
             records.Add(record);
-            records.Add(type_ch_highest_record_user.First());
-
+            if (type_ch_highest_record_user.Count() != 0)
+                records.Add(type_ch_highest_record_user.First());
+            else
+            {
+                record = new Record();
+                record.grade = 0;
+                records.Add(record);
+            }
             return records.AsEnumerable();
         }
 

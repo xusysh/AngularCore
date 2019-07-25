@@ -48,9 +48,9 @@ namespace AngularCoreUnitTest
         {
             Uname uname = new Uname
             {
-                uname = "test1",
+                uname = "369",
             };
-            checkRecordsController.GetRecords(uname);
+            var a = checkRecordsController.GetRecords(uname);
         }
 
     }

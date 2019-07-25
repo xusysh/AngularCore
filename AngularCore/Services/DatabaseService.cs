@@ -131,10 +131,13 @@ namespace AngularCore.Services
                 //进行查询
                 var command = new MySqlCommand(cmd, connection);
                 MySqlDataReader reader = command.ExecuteReader();
+                int val_int = 0;
                 reader.Read();
-                int val = Convert.ToInt32(reader.GetValue(0));
+                var val = reader.GetValue(0);
+                if (val != DBNull.Value)
+                    val_int = Convert.ToInt32(val);
                 reader.Close();
-                return val;
+                return val_int;
             }
             catch (Exception ex)
             {

@@ -166,6 +166,9 @@ export class TypeNumComponent {
       this.row_per_minute = this.right_row_count / (this.test_time - this.remain_seconds) * 60;
     }
     else {
+      if (this.input_rows_check[index] == RowCheckStatus.Right) {
+        this.right_row_count--;
+      }
       this.input_rows_check[index] = RowCheckStatus.Wrong;
     }
   }

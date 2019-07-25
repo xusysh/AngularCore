@@ -4,14 +4,24 @@
   </div>
   <div el-header height="15px"></div>
   <div el-container>
-    <div el-aside align="center" width="32%"></div>
-    <div el-aside align="center" width="36%">
-
+    <div el-aside align="center" width="30%"></div>
+    <div el-aside width="40%">
+      <div *ngFor="let ch_row of generated_ch_rows; let i = index;" class="well" align="center">
+        <span *ngFor="let ch of ch_row; let j = index;" style="font-family:'Microsoft YaHei UI'; font-size:larger;"
+              [ngStyle]="{'color':generated_ch_rows_color[i][j]}">
+          {{ch}}
+        </span>
+        <el-input #inputs [(model)]="input_rows[i]" placeholder="输入内容以开始计时"
+                  maxlength="15" (focus)="current_focus_row = i" (modelChange)="InputRowChanged()"
+                  (keypress)="OnKeyPress($event)" (keydown)="OnKeyDown($event)">
+        </el-input>
+      </div>
     </div>
-    <div el-aside align="center" width="6%"></div>
+    <div el-aside align="center" width="5%"></div>
     <div el-aside align="center" width="20%">
       <el-card class="box-card" *ngIf="start_count">
         <div>剩余时间：{{min}}分{{sec | number:'2.0'}}秒</div>
+        <div>正确字数：{{right_ch_count}}字</div>
         <div>录入速度：{{ch_per_minute | number:'0.2'}}行/分钟</div>
       </el-card>
     </div>
@@ -22,8 +32,8 @@
           <strong>测试结束</strong>
         </span>
       </ng-template>
-      <div style="text-align:center">录入正确行数:{{right_ch_count}}行</div>
-      <div style="text-align:center">录入速度:{{ch_per_minute}}行/分钟</div>
+      <div style="text-align:center">录入正确字数:{{right_ch_count}}字</div>
+      <div style="text-align:center">录入速度:{{ch_per_minute}}字/分钟</div>
       <ng-template #footer>
         <div el-container>
           <div el-aside align="center" width="20%"></div>
@@ -37,7 +47,7 @@
         </div>
       </ng-template>
     </el-dialog>
-    <div el-aside align="center" width="6%"></div>
+    <div el-aside align="center" width="5%"></div>
   </div>
 </div>
 

@@ -12,7 +12,7 @@ export class TypeChComponent {
   //控制测试界面元素
   public ch_per_row: number = 15;
   public row_count: number = 5;
-  public test_time: number = 30;
+  public test_time: number = 300;
   public remain_seconds: number = 0;
   public min: number = 0;
   public sec: number = 0;
@@ -123,10 +123,10 @@ export class TypeChComponent {
         this.generated_ch_rows_color[this.current_focus_row][0] = ChCheckStatus.Unchecked;
         this.input_rows[this.current_focus_row] = '';
         this.PrevInput();
+        this.CountRightCh();
         return false;
       }
     }
-    this.CountRightCh();
   }
 
   public InputRowChanged() {

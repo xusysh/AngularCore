@@ -48,9 +48,21 @@
 </div>
 
 <div>
-  <el-dialog [title]="'查询结束'" [(visible)]="active_search"
+  <el-dialog [title]="'查询结果'" [(visible)]="active_search"
              [center]="true">
-    <span>他为我们朗诵了葛底斯堡演讲。</span>
+    <div style="text-align:center">
+      <span *ngIf="records">
+        小键盘测试平均纪录为{{records[0].grade}}行/分钟<br>
+        小键盘测试最高纪录为{{records[1].grade}}字/分钟 by {{records[1].uname}}<br>
+        打字测试平均纪录为{{records[2].grade}}行/分钟<br>
+        打字测试最高纪录为{{records[3].grade}}字/分钟 by {{records[3].uname}}<br>
+        <br>
+        {{records[5].uname}}的小键盘测试平均纪录为{{records[4].grade}}行/分钟<br>
+        {{records[5].uname}}的小键盘测试最高纪录为{{records[5].grade}}字/分钟<br>
+        {{records[5].uname}}的打字测试平均纪录为{{records[6].grade}}行/分钟<br>
+        {{records[5].uname}}的打字测试最高纪录为{{records[7].grade}}字/分钟<br>
+      </span>
+    </div>
   </el-dialog>
 </div>
 

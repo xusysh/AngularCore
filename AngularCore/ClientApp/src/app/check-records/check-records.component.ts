@@ -13,8 +13,8 @@ export class CheckRecordsComponent {
   private http_client: HttpClient = null;
   private base_url: string = null;
 
-  public input_content: string = null;
-  public input_uname: string = null;
+  public input_content: string = '';
+  public input_uname: string = '';
   public active_search: boolean = false;
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string,
@@ -47,13 +47,12 @@ export class CheckRecordsComponent {
     var uname: Uname = {
       uname: this.input_uname == '' ? '匿名' : this.input_uname,
     };
-    this.http_client.post<Record[]>(this.base_url + 'api/CheckRecords/GerRecords', uname).
+    this.http_client.post<Record[]>(this.base_url + 'api/CheckRecords/GetRecords', uname).
       subscribe(data => {
         this.records = data;
         this.active_search = true;
         this.message['success']('查询成功')
       }, error => this.message['error']('查询失败'));
-
   }
 
 }

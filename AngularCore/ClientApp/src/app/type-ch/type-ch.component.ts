@@ -78,7 +78,7 @@ export class TypeChComponent {
     this.ch_per_minute = 0;
     if (this.start_count) return;
     this.notify.setOptions({ duration: 3000 })
-    this.notify['success']('计时3分钟，每页5行，每行15字，按回车换行', '开始测试')
+    this.notify['success']('计时5分钟，每页5行，每行15字，按回车换行', '开始测试')
     this.start_count = true;
     this.remain_seconds = this.test_time + 1;
     this.CountDown();

@@ -33,7 +33,7 @@
         </span>
       </ng-template>
       <div style="text-align:center">录入正确字数:{{right_ch_count}}字</div>
-      <div style="text-align:center">录入速度:{{ch_per_minute}}字/分钟</div>
+      <div style="text-align:center">录入速度:{{ch_per_minute | number:'0.2'}}字/分钟</div>
       <ng-template #footer>
         <div el-container>
           <div el-aside align="center" width="20%"></div>

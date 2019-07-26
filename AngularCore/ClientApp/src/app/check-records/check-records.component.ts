@@ -31,7 +31,7 @@ export class CheckRecordsComponent {
   }
 
   public PostComment() {
-    var comment = {
+    var comment: Comment = {
       id: 0,
       uname: this.input_uname == '' ? '匿名' : this.input_uname,
       content: this.input_content,

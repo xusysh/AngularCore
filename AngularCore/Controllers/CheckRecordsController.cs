@@ -81,7 +81,7 @@ namespace AngularCore.Controllers
                     id = 0,
                     uname = comment.uname,
                     content = comment.content,
-                    datetime = DateTime.Now
+                    datetime = DateTime.Now.ToString()
                 }, "comments");
             return new MyResponse("post received");
         }
@@ -101,7 +101,7 @@ namespace AngularCore.Controllers
         public int id;
         public string uname;
         public string content;
-        public DateTime datetime;
+        public string datetime;
     }
 
     public class Uname

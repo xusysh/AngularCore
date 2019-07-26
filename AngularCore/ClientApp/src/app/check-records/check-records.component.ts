@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ElMessageService, ElNotificationService } from 'element-angular'
-import { setTimeout } from 'timers';
 
 @Component({
   selector: 'app-check-records',
@@ -31,7 +30,7 @@ export class CheckRecordsComponent {
   }
 
   public PostComment() {
-    var comment: Comment = {
+    var comment: CommentSend = {
       uname: this.input_uname == '' ? '匿名' : this.input_uname,
       content: this.input_content,
     };
@@ -60,6 +59,13 @@ interface MyResponse {
 }
 
 interface Comment {
+  id: number,
+  uname: string,
+  content: string,
+  datetime: string
+}
+
+interface CommentSend {
   uname: string,
   content: string,
 }

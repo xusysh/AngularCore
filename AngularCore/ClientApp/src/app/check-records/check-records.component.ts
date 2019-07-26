@@ -32,10 +32,8 @@ export class CheckRecordsComponent {
 
   public PostComment() {
     var comment: Comment = {
-      id: 0,
       uname: this.input_uname == '' ? '匿名' : this.input_uname,
       content: this.input_content,
-      datetime: new Date()
     };
     this.http_client.post<MyResponse>(this.base_url + 'api/CheckRecords/RecvComment', comment).
       subscribe(response => this.message['success']('提交成功'), error => this.message['error']('提交失败'));
@@ -62,10 +60,8 @@ interface MyResponse {
 }
 
 interface Comment {
-  id: number,
   uname: string,
   content: string,
-  datetime: Date
 }
 
 interface Uname {

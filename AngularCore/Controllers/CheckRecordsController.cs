@@ -73,26 +73,27 @@ namespace AngularCore.Controllers
         }
 
         [HttpPost("[action]")]
-        public MyResponse RecvComment([FromBody]Comment comment)
+        public MyResponse RecvComment([FromBody]CommentRecv comment)
         {
-            db_service.InsertRecord(comment, "comments");
+            db_service.InsertRecord(
+                new Comment
+                {
+                    id = 0,
+                    uname = comment.uname,
+                    content = comment.content,
+                    datetime = DateTime.Now
+                }, "comments");
             return new MyResponse("post received");
         }
 
-        [HttpPost("[action]")]
-        public void InsertComment([FromBody]Comment comment)
-        {
-            try
-            {
-                db_service.InsertRecord(comment,"comments");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error from Controllers.CheckRecordsController.InsertComment: {ex.Message}");
-                throw;
-            }
-        }
 
+    }
+
+    //从前端收到的Comment
+    public class CommentRecv
+    {
+        public string uname;
+        public string content;
     }
 
     public class Comment

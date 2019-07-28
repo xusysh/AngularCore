@@ -8,25 +8,29 @@ namespace AngularCore.Services
 {
     public class LogService
     {
-        StreamWriter file;
-        LogService(string filepath)
+        string filepath = null;
+        public LogService(string filepath)
         {
-            file = new StreamWriter(filepath);
+            this.filepath = filepath;
         }
-        ~LogService()
+        public void AccessLog(string src_ip,string action,string content)
         {
-            file.Close();
-        }
-        public void writeLog(string type, string content)
-        {
-            file.WriteLine($"{DateTime.Now}:\n{type}-{content}");
+            try
+            {
+                using(var file = new StreamWriter(filepath,true))
+                {
+                    file.WriteLine($"{src_ip}-{DateTime.Now}:\n{action}-{content}");
+                    file.Flush();
+                    file.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\nError from Service.LogService:{ex.Message}");
+                throw;
+            }
         }
 
     }
-    public class Log
-    {
-        public DateTime time { get; set; }
-        public string type { get; set; }
-        public string content { get; set; }
-    }
+
 }

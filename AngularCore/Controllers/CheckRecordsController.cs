@@ -14,10 +14,15 @@ namespace AngularCore.Controllers
     public class CheckRecordsController : ControllerBase
     {
         DatabaseService db_service = new DatabaseService("111.231.69.132", "root", "admin", "AngularCoreDB");
+        LogService log_service = new LogService("../../logfiles/access.log");
 
         [HttpGet("[action]")]
         public IEnumerable<Comment> GetComments()
         {
+            string ip = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
+            if (string.IsNullOrEmpty(ip))
+                ip = HttpContext.Connection.RemoteIpAddress.ToString();
+            log_service.AccessLog(ip,"Get","GetComments");
             return db_service.GetRecords<Comment>("comments", null, null, "order by id desc");
         }
 

@@ -52,6 +52,16 @@ export class TypeNumComponent {
     this.http_client = http;
     this.base_url = base_url;
     this.RefreshNums();
+    this.Entered();
+  }
+
+  public Entered() {
+    var msg: MyStrPost = {
+      msg: 'entered'
+    };
+    this.http_client.post<MyResponse>(this.base_url + 'api/TypeNum/RecvEnteredMsg', msg).
+      subscribe(response => console.log(response), error => console.log(error));
+    this.end_count = false;
   }
 
   //提交记录
@@ -205,6 +215,10 @@ export class TypeNumComponent {
 }
 
 interface MyResponse {
+  msg: string;
+}
+
+interface MyStrPost {
   msg: string;
 }
 

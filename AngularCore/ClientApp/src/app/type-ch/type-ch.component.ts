@@ -43,6 +43,16 @@ export class TypeChComponent {
     this.http_client = http;
     this.base_url = base_url;
     this.RefreshCHs(true);
+    this.Entered();
+  }
+
+  public Entered() {
+    var msg: MyStrPost = {
+      msg:'entered'
+    };
+    this.http_client.post<MyResponse>(this.base_url + 'api/TypeCh/RecvEnteredMsg', msg).
+      subscribe(response => console.log(response), error => console.log(error));
+    this.end_count = false;
   }
 
   //提交记录
@@ -179,6 +189,10 @@ export class TypeChComponent {
 }
 
 interface MyResponse {
+  msg: string;
+}
+
+interface MyStrPost {
   msg: string;
 }
 

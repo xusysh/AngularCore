@@ -75,7 +75,7 @@ export class TypeChComponent {
       this.generated_ch_rows[i] = new Array<string>(this.ch_per_row);
       this.generated_ch_rows_color[i] = new Array<string>(this.ch_per_row);
       for (let j = 0; j < this.ch_per_row; j++) {
-        this.generated_ch_rows[i][j] = this.random_ch.simplified();
+        this.generated_ch_rows[i][j] = this.random_ch.common();
         this.generated_ch_rows_color[i][j] = ChCheckStatus.Unchecked;
       }
     }

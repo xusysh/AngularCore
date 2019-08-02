@@ -2,12 +2,13 @@ import { Component, Inject, ElementRef, ViewChildren, ViewChild, QueryList, Inpu
 import { HttpClient } from '@angular/common/http';
 import { ElNotificationService } from 'element-angular'
 import { ElMessageService } from 'element-angular'
+import { parse } from 'path';
 
 @Component({
-  selector: 'app-type-num',
-  templateUrl: './type-num.component.html'
+  selector: 'app-type-num-normal',
+  templateUrl: './type-num-normal.component.html'
 })
-export class TypeNumComponent {
+export class TypeNumNormalComponent {
   //控制测试界面元素
   public row_count: number = 15;
   public test_time: number = 180;
@@ -23,8 +24,8 @@ export class TypeNumComponent {
   public start_count: boolean = false;
   public end_count: boolean = false;
   //控制界面元素显示
-  public generated_num_rows: Array<NumRow> = new Array<NumRow>(this.row_count);
-  public generated_num_rows_color: Array<NumRowColor> = new Array<NumRowColor>(this.row_count);
+  public generated_num_rows: Array<number> = new Array<number>(this.row_count);
+  public generated_num_rows_color: Array<string> = new Array<string>(this.row_count);
   public input_rows: Array<string> = new Array<string>(this.row_count);
   public input_rows_check: Array<string> = new Array<string>(this.row_count);
   public current_focus_row: number = 0;
@@ -40,11 +41,11 @@ export class TypeNumComponent {
   @ViewChildren('inputs') input_doms: QueryList<ElementRef>;
   */
   //页面元素渲染成功后调用
-  ngAfterViewInit() { 
- /*   this.input_elems = this.input_doms.toArray();
-    for (var prop in this.input_elems[0]) {
-      alert(prop + '\n' + this.input_doms[prop]);
-    } */
+  ngAfterViewInit() {
+    /*   this.input_elems = this.input_doms.toArray();
+       for (var prop in this.input_elems[0]) {
+         alert(prop + '\n' + this.input_doms[prop]);
+       } */
     this.inputs[this.current_focus_row].focus();
   }
 
@@ -81,18 +82,9 @@ export class TypeNumComponent {
   //刷新随机数字
   public RefreshNums(): void {
     for (var i = 0; i < this.row_count; i++) {
-      var num_row: NumRow = {
-        num1: Math.ceil(Math.random() * 999),
-        num2: Math.ceil(Math.random() * 999),
-        num3: Number(Math.ceil(Math.random() * 99999) / 100)
-      };
-      var num_row_color: NumRowColor = {
-        num1_color: NumCheckStatus.Unchecked,
-        num2_color: NumCheckStatus.Unchecked,
-        num3_color: NumCheckStatus.Unchecked
-      };
+      let num_row = Number(Math.ceil(Math.random() * 100000000) / 100);
       this.generated_num_rows[i] = num_row;
-      this.generated_num_rows_color[i] = num_row_color;
+      this.generated_num_rows_color[i] = NumCheckStatus.Unchecked;
       this.input_rows[i] = '';
       this.input_rows_check[i] = RowCheckStatus.Unchecked;
     }
@@ -144,8 +136,6 @@ export class TypeNumComponent {
       this.NextInput();
     }
     else if ((keycode >= 0x30 && keycode <= 0x39) || keycode == 46) {   //小键盘数字
-      if (this.input_rows[cur].length == 3 || this.input_rows[cur].length == 8)
-        this.input_rows[cur] += ", ";
     }
     else return false;
   }
@@ -154,8 +144,6 @@ export class TypeNumComponent {
     var cur = this.current_focus_row;
     var keycode = window.event ? event.keyCode : event.which;   //获取按键编码
     if (keycode == 8) {         //退格
-      if (this.input_rows[cur].length == 5 || this.input_rows[cur].length == 10)
-        this.input_rows[cur] = this.input_rows[cur].substring(0, this.input_rows[cur].length - 2);
     }
     else if (keycode == 38) {   //上方向键
       this.PrevInput();
@@ -167,19 +155,14 @@ export class TypeNumComponent {
 
   //判断输入数字是否正确并改变颜色和图标显示
   public Judge(index: number) {
-    var input_nums = this.input_rows[index].split(', ');
-    var generated_nums = this.generated_num_rows[index];
-    var row_color = this.generated_num_rows_color[index];
-    var i: number = 0;
-    var right_row: boolean = true;
-    for (var prop in generated_nums) {
-      if (parseFloat(input_nums[i]) == generated_nums[prop])
-        row_color[prop + '_color'] = NumCheckStatus.Right;
-      else {
-        row_color[prop + '_color'] = NumCheckStatus.Wrong;
-        right_row = false;
-      }
-      i++;
+    var right_row: boolean = false;
+    if (parseFloat(this.input_rows[index]) == this.generated_num_rows[index]) {
+      right_row = true;
+      this.generated_num_rows_color[index] = NumCheckStatus.Right;
+    }
+    else {
+      right_row = false;
+      this.generated_num_rows_color[index] = NumCheckStatus.Wrong;
     }
     if (this.input_rows_check[index] == RowCheckStatus.Unchecked)
       this.all_row_count++;
@@ -245,18 +228,6 @@ interface MyResponse {
 
 interface MyStrPost {
   msg: string;
-}
-
-interface NumRow {
-  num1: number;
-  num2: number;
-  num3: number;
-}
-
-interface NumRowColor {
-  num1_color: string;
-  num2_color: string;
-  num3_color: string;
 }
 
 enum NumCheckStatus {

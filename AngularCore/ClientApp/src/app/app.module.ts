@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { TypeNumComponent } from './type-num/type-num.component';
+import { TypeNumNormalComponent } from './type-num-normal/type-num-normal.component'
 import { TypeChComponent } from './type-ch/type-ch.component';
 import { CheckRecordsComponent } from './check-records/check-records.component';
 
@@ -19,6 +20,7 @@ import { CheckRecordsComponent } from './check-records/check-records.component';
     NavMenuComponent,
     HomeComponent,
     TypeNumComponent,
+    TypeNumNormalComponent,
     TypeChComponent,
     CheckRecordsComponent
   ],
@@ -31,6 +33,7 @@ import { CheckRecordsComponent } from './check-records/check-records.component';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'type-num', component: TypeNumComponent },
+      { path: 'type-num-normal', component: TypeNumNormalComponent },
       { path: 'type-ch', component: TypeChComponent },
       { path: 'check-records', component: CheckRecordsComponent }
     ])

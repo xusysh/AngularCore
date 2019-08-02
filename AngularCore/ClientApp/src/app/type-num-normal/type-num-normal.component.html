@@ -1,23 +1,21 @@
-<div el-container direction="vertical" class="type-num-container">
+<div el-container direction="vertical" class="type-num-normal-container">
   <div el-header>
-    <h1 align="center">小键盘录入测试(加强版)</h1>
+    <h1 align="center">小键盘录入测试</h1>
   </div>
   <div el-header height="15px"></div>
   <div el-container>
-    <div el-aside align="center" width="32%"></div>
-    <div el-aside align="center" width="36%">
+    <div el-aside align="center" width="35%"></div>
+    <div el-aside align="center" width="30%">
       <el-input #inputs *ngFor="let num_row of generated_num_rows; let i = index"
                 [icon]="input_rows_check[i]" [(model)]="input_rows[i]" placeholder="输入内容以开始计时"
-                maxlength="16" (focus)="current_focus_row = i" id="'input'+i"
+                maxlength="9" (focus)="current_focus_row = i" id="'input'+i"
                 (keypress)="OnKeyPress($event)" (keydown)="OnKeyDown($event)">
         <ng-template #prepend>
-          <code [ngStyle]="{'background-color': '#f5f7fa','color':generated_num_rows_color[i].num1_color}">{{num_row.num1 | number:'3.0'}}</code>
-          <code [ngStyle]="{'background-color': '#f5f7fa','color':generated_num_rows_color[i].num2_color}">{{num_row.num2 | number:'3.0'}}</code>
-          <code [ngStyle]="{'background-color': '#f5f7fa','color':generated_num_rows_color[i].num3_color}">{{num_row.num3 | number:'3.2'}}</code>
+          <code [ngStyle]="{'background-color': '#f5f7fa','color':generated_num_rows_color[i]}">{{num_row | number:'6.2'}}</code>
         </ng-template>
       </el-input>
     </div>
-    <div el-aside align="center" width="6%"></div>
+    <div el-aside align="center" width="7.5%"></div>
     <div el-aside align="center" width="20%">
       <el-card class="box-card" *ngIf="start_count">
         <div>剩余时间：{{min}}分{{sec | number:'2.0'}}秒</div>
@@ -50,6 +48,6 @@
         </div>
       </ng-template>
     </el-dialog>
-    <div el-aside align="center" width="6%"></div>
+    <div el-aside align="center" width="7.5%"></div>
   </div>
- </div>
+</div>

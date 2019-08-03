@@ -27297,8 +27297,8 @@ export class HanziToWubi {
 
   public GetWubiImg(ch: string): string {
     if (ch in this.hanzi_wubi)
-      return this.hanzi_wubi[ch]['wubi_code'];
-    else return 'none';
+      return this.hanzi_wubi[ch]['wubi_img_url'];
+    else return '././assets/not_found.png';
   }
 
 };

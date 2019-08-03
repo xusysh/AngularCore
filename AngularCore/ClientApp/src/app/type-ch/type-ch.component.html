@@ -10,7 +10,8 @@
         <el-tooltip *ngFor="let ch of ch_row; let j = index;" 
                     placement="{{i==0?'bottom':'top'}}" >
           <span style="font-family:'Microsoft YaHei UI'; font-size:larger;"
-                [ngStyle]="{'color':generated_ch_rows_color[i][j]}" mouse>
+                [ngStyle]="{'color':generated_ch_rows_color[i][j]}"
+                (mouseenter)="MouseEnterCh(i,j)" (mouseleave)="mouse_on_ch=false">
             {{ch}}
           </span>
           <ng-template #tip>
@@ -25,11 +26,19 @@
     </div>
     <div el-aside align="center" width="5%"></div>
     <div el-aside align="center" width="20%">
-      <el-card class="box-card" *ngIf="start_count">
-        <div>剩余时间：{{min}}分{{sec | number:'2.0'}}秒</div>
-        <div>正确字数：{{right_ch_count}}字</div>
-        <div>录入速度：{{ch_per_minute | number:'0.2'}}字/分钟</div>
-      </el-card>
+      <div>
+        <el-card class="box-card" *ngIf="start_count">
+          <div>剩余时间：{{min}}分{{sec | number:'2.0'}}秒</div>
+          <div>正确字数：{{right_ch_count}}字</div>
+          <div>录入速度：{{ch_per_minute | number:'0.2'}}字/分钟</div>
+        </el-card>
+      </div>
+      <div style="text-align:center">
+        <div style="min-height:1px; height:10px"></div>
+        <el-card *ngIf="mouse_on_ch">
+          <img src="{{current_ch_wubi_img}}" class="image">
+        </el-card>
+      </div>
     </div>
     <el-dialog [close-on-click-modal]="false" [(visible)]="end_count" [center]="true"
                width="30%" height="20%">

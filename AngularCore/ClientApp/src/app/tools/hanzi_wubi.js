@@ -26811,9 +26811,9 @@ var HanziToWubi = /** @class */ (function () {
     };
     HanziToWubi.prototype.GetWubiImg = function (ch) {
         if (ch in this.hanzi_wubi)
-            return this.hanzi_wubi[ch]['wubi_code'];
+            return this.hanzi_wubi[ch]['wubi_img_url'];
         else
-            return 'none';
+            return '././assets/not_found.png';
     };
     return HanziToWubi;
 }());

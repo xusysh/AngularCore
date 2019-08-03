@@ -32,6 +32,8 @@ export class TypeChComponent {
   public current_focus_row: number = 0;
   public random_ch: RandomChar = new RandomChar();
   public hanzi_to_wubi: HanziToWubi = new HanziToWubi();
+  public current_ch_wubi_img: string = '';
+  public mouse_on_ch: boolean = false;
   //提交http请求
   private http_client: HttpClient = null;
   private base_url: string = null;
@@ -191,6 +193,11 @@ export class TypeChComponent {
         }
       }
     }
+  }
+
+  public MouseEnterCh(i: number, j: number) {
+    this.mouse_on_ch = true;
+    this.current_ch_wubi_img = this.hanzi_to_wubi.GetWubiImg(this.generated_ch_rows[i][j]);
   }
 
 }

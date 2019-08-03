@@ -82,7 +82,8 @@ export class TypeNumNormalComponent {
   //刷新随机数字
   public RefreshNums(): void {
     for (var i = 0; i < this.row_count; i++) {
-      let num_row = Number(Math.ceil(Math.random() * 100000000) / 100);
+      let num_len = Math.floor(Math.random() * 6) + 4;
+      let num_row = Number(Math.floor(Math.random() * Math.pow(10, num_len)) / 100);
       this.generated_num_rows[i] = num_row;
       this.generated_num_rows_color[i] = NumCheckStatus.Unchecked;
       this.input_rows[i] = '';

@@ -29,6 +29,7 @@
       <div>
         <el-card class="box-card" *ngIf="start_count">
           <div>剩余时间：{{min}}分{{sec | number:'2.0'}}秒</div>
+          <div>录入总字数：{{all_ch_count}}字</div>
           <div>正确字数：{{right_ch_count}}字</div>
           <div>录入速度：{{ch_per_minute | number:'0.2'}}字/分钟</div>
         </el-card>
@@ -47,7 +48,9 @@
           <strong>测试结束</strong>
         </span>
       </ng-template>
+      <div style="text-align:center">录入总字数：{{all_ch_count}}字</div>
       <div style="text-align:center">录入正确字数:{{right_ch_count}}字</div>
+      <div style="text-align:center">正确率：{{accuracy_percent | number:'2.2'}}%</div>
       <div style="text-align:center">录入速度:{{ch_per_minute | number:'0.2'}}字/分钟</div>
       <ng-template #footer>
         <div el-container>

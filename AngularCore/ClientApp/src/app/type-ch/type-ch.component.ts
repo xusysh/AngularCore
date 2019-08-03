@@ -22,6 +22,9 @@ export class TypeChComponent {
   public ch_per_minute: number = 0;
   public right_ch_count: number = 0;
   public right_ch_count_prev: number = 0;
+  public all_ch_count: number = 0;
+  public all_ch_count_prev: number = 0;
+  public accuracy_percent: number = 0;
   public start_count: boolean = false;
   public end_count: boolean = false;
   //控制界面元素显示
@@ -74,8 +77,14 @@ export class TypeChComponent {
   //刷新汉字
   public RefreshCHs(reset: boolean = false): void {
 
-    if (reset) this.right_ch_count_prev = 0;
-    else this.right_ch_count_prev = this.right_ch_count;
+    if (reset) {
+      this.right_ch_count_prev = 0;
+      this.all_ch_count_prev = 0;
+    }
+    else {
+      this.right_ch_count_prev = this.right_ch_count;
+      this.all_ch_count_prev = this.all_ch_count;
+    }
     for (let i = 0; i < this.row_count; i++) {
       this.input_rows[i] = '';
       this.generated_ch_rows[i] = new Array<string>(this.ch_per_row);
@@ -94,7 +103,9 @@ export class TypeChComponent {
   public BeginTest(): void {
     this.end_count = false;
     this.right_ch_count = 0;
+    this.all_ch_count = 0;
     this.ch_per_minute = 0;
+    this.accuracy_percent = 0;
     if (this.start_count) return;
     this.notify.setOptions({ duration: 3000 })
     this.notify['success']('计时5分钟，每页5行，每行15字，按回车换行', '开始测试')
@@ -109,6 +120,7 @@ export class TypeChComponent {
     this.min = Math.floor(this.remain_seconds / 60);
     this.sec = this.remain_seconds % 60;
     this.ch_per_minute = this.right_ch_count / (this.test_time - this.remain_seconds) * 60;
+    this.accuracy_percent = this.right_ch_count / this.all_ch_count * 100;
     if (this.remain_seconds > 0) {
       setTimeout(() => {
         this.CountDown()
@@ -118,6 +130,7 @@ export class TypeChComponent {
       this.start_count = false;
       this.end_count = true;
       this.ch_per_minute = this.right_ch_count / (this.test_time - this.remain_seconds) * 60;
+      this.accuracy_percent = this.right_ch_count / this.all_ch_count * 100;
       this.RefreshCHs();
     }
   }
@@ -159,9 +172,9 @@ export class TypeChComponent {
     for (let i = cur_row.length; i < this.ch_per_row; i++) {
       this.generated_ch_rows_color[this.current_focus_row][i] = ChCheckStatus.Unchecked;
     }
+    this.CountRightCh();
     if (this.input_rows[this.current_focus_row].length >= this.ch_per_row)
       this.NextInput();
-    this.CountRightCh();
   }
 
   public NextInput() {
@@ -186,8 +199,12 @@ export class TypeChComponent {
 
   public CountRightCh() {
     this.right_ch_count = this.right_ch_count_prev;
+    this.all_ch_count = this.all_ch_count_prev;
     for (let i = 0; i < this.row_count; i++) {
       for (let j = 0; j < this.ch_per_row; j++) {
+        if (this.generated_ch_rows_color[i][j] != ChCheckStatus.Unchecked) {
+          this.all_ch_count++;
+        }
         if (this.generated_ch_rows_color[i][j] == ChCheckStatus.Right) {
           this.right_ch_count++;
         }

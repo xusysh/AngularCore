@@ -29,11 +29,13 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\check-records\check-records.component.ts" />
+    <None Remove="ClientApp\src\app\tools\hanzi_wubi.ts" />
     <None Remove="ClientApp\src\app\tools\random-ch.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\check-records\check-records.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\tools\hanzi_wubi.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\tools\random-ch.ts" />
   </ItemGroup>
 

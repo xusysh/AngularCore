@@ -7,10 +7,16 @@
     <div el-aside align="center" width="30%"></div>
     <div el-aside width="40%">
       <div *ngFor="let ch_row of generated_ch_rows; let i = index;" class="well" align="center">
-        <span *ngFor="let ch of ch_row; let j = index;" style="font-family:'Microsoft YaHei UI'; font-size:larger;"
-              [ngStyle]="{'color':generated_ch_rows_color[i][j]}">
-          {{ch}}
-        </span>
+        <el-tooltip *ngFor="let ch of ch_row; let j = index;" 
+                    placement="{{i==0?'bottom':'top'}}" >
+          <span style="font-family:'Microsoft YaHei UI'; font-size:larger;"
+                [ngStyle]="{'color':generated_ch_rows_color[i][j]}" mouse>
+            {{ch}}
+          </span>
+          <ng-template #tip>
+            <span>五笔编码:{{generated_ch_wubi_code[i][j]}}</span>
+          </ng-template>
+        </el-tooltip>
         <el-input #inputs [(model)]="input_rows[i]" placeholder="输入内容以开始计时"
                   maxlength="15" (focus)="current_focus_row = i" (modelChange)="InputRowChanged()"
                   (keypress)="OnKeyPress($event)" (keydown)="OnKeyDown($event)">

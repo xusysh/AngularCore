@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ElNotificationService } from 'element-angular'
 import { ElMessageService } from 'element-angular'
 import { RandomChar } from '../tools/random-ch';
+import { HanziToWubi } from '../tools/hanzi_wubi'
 
 @Component({
   selector: 'app-type-ch',
@@ -27,8 +28,10 @@ export class TypeChComponent {
   public input_rows: Array<string> = new Array<string>(this.row_count);
   public generated_ch_rows: Array<Array<string>> = new Array<Array<string>>(this.row_count);
   public generated_ch_rows_color: Array<Array<string>> = new Array<Array<string>>(this.row_count);
+  public generated_ch_wubi_code: Array<Array<string>> = new Array<Array<string>>(this.row_count);
   public current_focus_row: number = 0;
   public random_ch: RandomChar = new RandomChar();
+  public hanzi_to_wubi: HanziToWubi = new HanziToWubi();
   //提交http请求
   private http_client: HttpClient = null;
   private base_url: string = null;
@@ -68,14 +71,18 @@ export class TypeChComponent {
 
   //刷新汉字
   public RefreshCHs(reset: boolean = false): void {
+
     if (reset) this.right_ch_count_prev = 0;
     else this.right_ch_count_prev = this.right_ch_count;
     for (let i = 0; i < this.row_count; i++) {
       this.input_rows[i] = '';
       this.generated_ch_rows[i] = new Array<string>(this.ch_per_row);
       this.generated_ch_rows_color[i] = new Array<string>(this.ch_per_row);
+      this.generated_ch_wubi_code[i] = new Array<string>(this.ch_per_row);
       for (let j = 0; j < this.ch_per_row; j++) {
-        this.generated_ch_rows[i][j] = this.random_ch.common();
+        let ch = this.random_ch.common();
+        this.generated_ch_rows[i][j] = ch;
+        this.generated_ch_wubi_code[i][j] = this.hanzi_to_wubi.GetWubiCode(ch);
         this.generated_ch_rows_color[i][j] = ChCheckStatus.Unchecked;
       }
     }

@@ -10,7 +10,7 @@
 
 export class HanziToWubi {
 
-  hanzi_wubi = {
+  hanzi_wubi: object = {
 	"吖": {
 		"wubi_code": "kuh",
 		"wubi_img_url": "http://www.cidianwang.com/file/wubi/吖.gif",

@@ -84,6 +84,7 @@ export class TypeNumNormalComponent {
     for (var i = 0; i < this.row_count; i++) {
       let num_len = Math.floor(Math.random() * 6) + 4;
       let num_row = Number(Math.floor(Math.random() * Math.pow(10, num_len)) / 100);
+      num_row = num_row < 10 ? num_row + 10 : num_row;
       this.generated_num_rows[i] = num_row;
       this.generated_num_rows_color[i] = NumCheckStatus.Unchecked;
       this.input_rows[i] = '';

@@ -2,8 +2,8 @@ import { Component, Inject, ElementRef, ViewChildren, ViewChild, QueryList, Inpu
 import { HttpClient } from '@angular/common/http';
 import { ElNotificationService } from 'element-angular'
 import { ElMessageService } from 'element-angular'
-import { RandomChar } from '../tools/random-ch';
-import { HanziToWubi } from '../tools/hanzi_wubi'
+import { RandomChar } from '../tools/random-ch.component';
+import { HanziToWubi } from '../tools/hanzi_wubi.component';
 
 @Component({
   selector: 'app-type-ch',

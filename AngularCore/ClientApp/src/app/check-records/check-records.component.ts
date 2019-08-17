@@ -36,6 +36,7 @@ export class CheckRecordsComponent {
     };
     this.http_client.post<MyResponse>(this.base_url + 'api/CheckRecords/RecvComment', comment).
       subscribe(response => this.message['success']('提交成功'), error => this.message['error']('提交失败'));
+    this.input_content = '';
     this.comments = null;
     setTimeout(() => { this.GetComments(); }, 500);
   }

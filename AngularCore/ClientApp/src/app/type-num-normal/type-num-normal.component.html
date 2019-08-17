@@ -11,7 +11,8 @@
                 maxlength="10" (focus)="current_focus_row = i" id="'input'+i"
                 (keypress)="OnKeyPress($event)" (keydown)="OnKeyDown($event)">
         <ng-template #prepend>
-          <code [ngStyle]="{'background-color': '#f5f7fa','color':generated_num_rows_color[i]}">{{num_row | number:'7.2'}}</code>
+          <code [ngStyle]="{'background-color': '#f5f7fa','color':generated_num_rows_color[i],
+                'font-size': '110%'}">{{num_row | number:'7.2'}}</code>
         </ng-template>
       </el-input>
     </div>

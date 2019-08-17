@@ -32,7 +32,7 @@ namespace AngularCore.Controllers
             int type_num_avg_grade = db_service.GetAvgElem("type_num_records", "grade");
             var type_num_highest_record = db_service.GetRecords<Record>("type_num_records",null,null, "order by grade desc");
             int type_ch_avg_grade = db_service.GetAvgElem("type_ch_records", "grade");
-            var type_ch_highest_record = db_service.GetRecords<Record>("type_ch_records");
+            var type_ch_highest_record = db_service.GetRecords<Record>("type_ch_records", null, null, "order by grade desc");
 
             int type_num_avg_grade_user = db_service.GetAvgElem("type_num_records", "grade", "uname", $"'{uname.uname}'");
             var type_num_highest_record_user = db_service.GetRecords<Record>("type_num_records", "uname", $"'{uname.uname}'",

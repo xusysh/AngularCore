@@ -37,6 +37,7 @@ export class TypeChComponent {
   public hanzi_to_wubi: HanziToWubi = new HanziToWubi();
   public current_ch_wubi_img: string = '';
   public mouse_on_ch: boolean = false;
+  public auto_infeed: boolean = false;
   //提交http请求
   private http_client: HttpClient = null;
   private base_url: string = null;
@@ -108,10 +109,13 @@ export class TypeChComponent {
     this.accuracy_percent = 0;
     if (this.start_count) return;
     this.notify.setOptions({ duration: 3000 })
-    this.notify['success']('计时5分钟，每页5行，每行15字，按回车换行', '开始测试')
+    this.notify['success']('计时5分钟，每页5行，每行15字，按回车换行\n', '开始测试');
     this.start_count = true;
     this.remain_seconds = this.test_time + 1;
     this.CountDown();
+    let warning: string = '自动换行已';
+    warning += this.auto_infeed ? '开启' : '关闭';
+    setTimeout(() => { this.notify['warning'](warning); }, 100);
   }
 
   //更新倒计时
@@ -154,10 +158,17 @@ export class TypeChComponent {
         || this.input_rows[this.current_focus_row].length == 0) {
         this.generated_ch_rows_color[this.current_focus_row][0] = ChCheckStatus.Unchecked;
         this.input_rows[this.current_focus_row] = '';
-        this.PrevInput();
+        if (this.auto_infeed)
+          this.PrevInput();
         this.CountRightCh();
         return false;
       }
+    }
+    else if (keycode == 38) {   //上方向键
+      this.PrevInput();
+    }
+    else if (keycode == 40) {   //下方向键
+      this.NextInput(false);
     }
   }
 
@@ -174,14 +185,17 @@ export class TypeChComponent {
     }
     this.CountRightCh();
     if (this.input_rows[this.current_focus_row].length >= this.ch_per_row)
-      this.NextInput();
+      if (this.auto_infeed)
+        this.NextInput();
   }
 
-  public NextInput() {
+  public NextInput(enter: boolean = true) {
     this.inputs[this.current_focus_row].blur();
     if (this.current_focus_row == this.row_count - 1) {
-      this.RefreshCHs();
-      this.current_focus_row = 0;
+      if (enter) {
+        this.RefreshCHs();
+        this.current_focus_row = 0;
+      }
     }
     else {
       this.current_focus_row++;
